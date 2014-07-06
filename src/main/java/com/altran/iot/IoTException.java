@@ -1,6 +1,6 @@
 package com.altran.iot;
 
-import org.valuereporter.helper.StatusType;
+import com.altran.iot.helper.StatusType;
 
 import java.util.UUID;
 

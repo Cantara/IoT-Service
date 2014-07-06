@@ -1,4 +1,4 @@
-package org.valuereporter.gui;
+package com.altran.iot.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

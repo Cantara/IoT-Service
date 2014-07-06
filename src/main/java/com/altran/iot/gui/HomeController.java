@@ -1,4 +1,4 @@
-package org.valuereporter.gui;
+package com.altran.iot.gui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

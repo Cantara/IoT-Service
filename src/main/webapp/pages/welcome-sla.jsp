@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../css/jqplot/jquery.jqplot.css" />
     <script type="text/javascript">
         $(document).ready(function(){
-            var uptime_vs_in_use_url =  "/reporter/observe/observedmethods/template-prefix/org.valuereporter.Welcome.ping";
+            var uptime_vs_in_use_url =  "/reporter/observe/observedmethods/template-prefix/com.altran.iot.Welcome.ping";
             var line1=[];
             $.getJSON(uptime_vs_in_use_url,  function(data) {
                 console.info("data:" + data[0].name);
@@ -24,7 +24,7 @@
 
 
                 var plot2 = $.jqplot('chart2', [line1], {
-                    title:'org.valuereporter.Welcome.ping',
+                    title:'com.altran.iot.Welcome.ping',
                     gridPadding:{right:35},
                     axes:{
                         xaxis:{

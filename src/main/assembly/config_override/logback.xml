@@ -32,7 +32,7 @@
     <logger name="org.springframework" level="WARN"/>
 
 
-    <logger name="org.valuereporter" level="TRACE"/>
+    <logger name="com.altran.iot" level="TRACE"/>
     <logger name="org.springframework.web" level="TRACE"/>
     <root level="info">
         <appender-ref ref="logfile" />

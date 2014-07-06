@@ -1,13 +1,15 @@
-package org.valuereporter.observation;
+package com.altran.iot.observation;
 
+import com.altran.iot.ObservationsService;
+import com.altran.iot.ObservedMethodJson;
+import com.altran.iot.QueryOperations;
+import com.altran.iot.WriteOperations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.valuereporter.QueryOperations;
-import org.valuereporter.WriteOperations;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author baardl
  * @author <a href="mailto:erik-dev@fjas.no">Erik Drolshammer</a>
  */
 @Component

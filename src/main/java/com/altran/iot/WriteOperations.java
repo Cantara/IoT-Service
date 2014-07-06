@@ -1,6 +1,7 @@
-package org.valuereporter;
+package com.altran.iot;
 
-import org.valuereporter.observation.ObservedMethod;
+
+import com.altran.iot.observation.ObservedMethod;
 
 import java.util.List;
 

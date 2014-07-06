@@ -1,4 +1,4 @@
-package org.valuereporter.observation;
+package com.altran.iot.observation;
 
 /**
  * @author <a href="bard.lind@gmail.com">Bard Lind</a>

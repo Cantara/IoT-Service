@@ -1,5 +1,6 @@
-package org.valuereporter.observation;
+package com.altran.iot.observation.;
 
+import com.altran.iot.observation.ObservedMethod;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

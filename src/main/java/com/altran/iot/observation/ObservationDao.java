@@ -1,4 +1,4 @@
-package org.valuereporter.observation;
+package com.altran.iot.observation;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

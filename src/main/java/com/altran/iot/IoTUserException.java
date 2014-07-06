@@ -1,13 +1,9 @@
 package com.altran.iot;
 
-import org.valuereporter.helper.StatusType;
+import com.altran.iot.helper.StatusType;
 
 /**
- * Created with IntelliJ IDEA.
- * User: bardl
- * Date: 20.03.13
- * Time: 10:54
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class IoTUserException extends IoTException {
 

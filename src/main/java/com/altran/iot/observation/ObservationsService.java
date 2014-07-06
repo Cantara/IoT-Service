@@ -1,7 +1,9 @@
-package org.valuereporter.observation;
+package com.altran.iot.observation;
 
-import org.valuereporter.QueryOperations;
-import org.valuereporter.WriteOperations;
+import com.altran.iot.QueryOperations;
+import com.altran.iot.WriteOperations;
+import com.altran.iot.observation.ObservationDao;
+import com.altran.iot.observation.ObservedMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

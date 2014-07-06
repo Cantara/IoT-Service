@@ -1,4 +1,4 @@
-package org.valuereporter.helper;
+package com.altran.iot.helper;
 
 
 public enum StatusType {

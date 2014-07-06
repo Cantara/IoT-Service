@@ -1,10 +1,11 @@
-package org.valuereporter.helper;
+package com.altran.iot.helper;
 
 
+import com.altran.iot.IoTException;
 import org.apache.commons.dbutils.QueryRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.valuereporter.ValuereporterException;
+import com.altran.iot.helper.StatusType;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -115,7 +116,7 @@ public class EmbeddedDatabaseHelper {
             createObservedMethod(connection);
             createImplementedMethod(connection);
         } catch (SQLException e) {
-            throw new ValuereporterException("Error creating tables. Intiialization fails", e, StatusType.RETRY_NOT_POSSIBLE);
+            throw new IoTException("Error creating tables. Intiialization fails", e, StatusType.RETRY_NOT_POSSIBLE);
         }
     }
 

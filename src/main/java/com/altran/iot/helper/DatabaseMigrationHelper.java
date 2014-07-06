@@ -1,14 +1,10 @@
-package org.valuereporter.helper;
+package com.altran.iot.helper;
 
-import net.sourceforge.jtds.jdbcx.JtdsDataSource;
+import com.altran.iot.IoTException;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
-import org.valuereporter.ValuereporterException;
-import org.valuereporter.ValuereporterTechnicalException;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -21,6 +17,7 @@ public class DatabaseMigrationHelper {
     private Flyway flyway;
 
     public DatabaseMigrationHelper(Properties resources) {
+        /*
         try {
             DataSource masterDs = createMasterDataSource(resources);
             flyway = new Flyway();
@@ -32,14 +29,17 @@ public class DatabaseMigrationHelper {
             logger.error(fatal, "No-Recoverable Error: " + tte.getMessage(), tte);
             throw tte;
         }
+        */
     }
 
     public void upgradeDatabase() {
+        /*
         try {
             flyway.migrate();
         } catch (FlywayException e) {
             throw new ValuereporterTechnicalException("Database upgrade failed.", e,StatusType.RETRY_NOT_POSSIBLE);
         }
+        */
     }
 
     public void cleanDatabase() {
@@ -57,8 +57,8 @@ public class DatabaseMigrationHelper {
      * @return  a new DataSource
      * @param resources
      */
-    private DataSource createMasterDataSource(Properties resources) throws ValuereporterException {
-
+    private DataSource createMasterDataSource(Properties resources) throws IoTException {
+        /*
 
         if (resources == null ) {
             logger.error("Missing properties for database migration, can not start the application.");
@@ -86,6 +86,7 @@ public class DatabaseMigrationHelper {
             throw new IllegalStateException(strb.toString());
         }
 
+
         JtdsDataSource ds = new JtdsDataSource();
         ds.setUser(dbUserName);
         ds.setPassword(dbUserPassword);
@@ -93,6 +94,9 @@ public class DatabaseMigrationHelper {
         ds.setPortNumber(port);
         ds.setDatabaseName(databasename);
         return ds;
+        */
+        return null;
+
     }
 
     private boolean isNullOrEmpty(String value) {

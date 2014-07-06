@@ -1,5 +1,9 @@
-package org.valuereporter;
+package com.altran.iot;
 
+import com.altran.iot.helper.DatabaseMigrationHelper;
+import com.altran.iot.helper.EmbeddedDatabaseHelper;
+import com.altran.iot.helper.PropertiesHelper;
+import com.altran.iot.helper.StatusType;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
@@ -11,10 +15,6 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-import org.valuereporter.helper.DatabaseMigrationHelper;
-import org.valuereporter.helper.EmbeddedDatabaseHelper;
-import org.valuereporter.helper.PropertiesHelper;
-import org.valuereporter.helper.StatusType;
 
 import java.io.File;
 import java.net.BindException;
@@ -25,7 +25,7 @@ import java.util.logging.LogManager;
 
 
 public class Main {
-    public static final int DEFAULT_PORT_NO = 4901;
+
     public static final String CONTEXT_PATH = "/reporter";
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
@@ -42,7 +42,7 @@ public class Main {
                 new DatabaseMigrationHelper(resources).upgradeDatabase();
             }
             jettyPort = PropertiesHelper.findHttpPort(resources);
-        } catch (ValuereporterException tde) {
+        } catch (IoTException tde) {
             log.error("Could not initalize the service. Exiting. ", tde);
             System.exit(0);
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class Main {
         try {
             main.start();
             main.join();
-        } catch (ValuereporterException e) {
+        } catch (IoTException e) {
             log.error("Failed to start the server. Reason {}. Port {} ", e.getMessage(), main.getPortNumber());
             main.stopOnError();
         }
@@ -93,13 +93,13 @@ public class Main {
         try {
             server.start();
         } catch (BindException be) {
-            throw new ValuereporterException("Failed to start the server. Ther port is already in use.", StatusType.RETRY_NOT_POSSIBLE);
+            throw new IoTException("Failed to start the server. Ther port is already in use.", StatusType.RETRY_NOT_POSSIBLE);
         } catch (Exception e) {
-            throw new ValuereporterException("Failed to start." ,e, StatusType.RETRY_NOT_POSSIBLE);
+            throw new IoTException("Failed to start." ,e, StatusType.RETRY_NOT_POSSIBLE);
         }
         Throwable springStartupFailed = context.getUnavailableException();
         if (springStartupFailed != null) {
-            throw new ValuereporterException("Failed to initialize Spring Application Context." , springStartupFailed, StatusType.RETRY_NOT_POSSIBLE);
+            throw new IoTException("Failed to initialize Spring Application Context." , springStartupFailed, StatusType.RETRY_NOT_POSSIBLE);
         }
         int localPort = getPortNumber();
         log.info("Jetty server started on port {}, context path {}", localPort, CONTEXT_PATH);

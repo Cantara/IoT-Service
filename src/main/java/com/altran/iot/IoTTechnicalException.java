@@ -1,6 +1,6 @@
 package com.altran.iot;
 
-import org.valuereporter.helper.StatusType;
+import com.altran.iot.helper.StatusType;
 
 /**
  * This class will identify that the root of these errors are tecnical, not user-created.

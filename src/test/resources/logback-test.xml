@@ -30,7 +30,7 @@
     <logger name="org.eclipse.jetty" level="WARN"/>
 
 
-    <logger name="org.valuereporter" level="debug"/>
+    <logger name="com.altran.iot" level="debug"/>
     <!--<logger name="org.springframework" level="TRACE"/>-->
     <root level="info">
         <appender-ref ref="logfile" />
