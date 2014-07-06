@@ -1,6 +1,5 @@
 package com.altran.iot;
 
-import com.altran.iot.helper.DatabaseMigrationHelper;
 import com.altran.iot.helper.EmbeddedDatabaseHelper;
 import com.altran.iot.helper.PropertiesHelper;
 import com.altran.iot.helper.StatusType;
@@ -26,7 +25,7 @@ import java.util.logging.LogManager;
 
 public class Main {
 
-    public static final String CONTEXT_PATH = "/reporter";
+    public static final String CONTEXT_PATH = "/iot/";
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     private Server server;
@@ -37,10 +36,12 @@ public class Main {
         Properties resources = PropertiesHelper.findProperties();
 
         try{
+            /*
             new EmbeddedDatabaseHelper(resources).initializeDatabase();
             if (useLocalDatabase(resources)) {
                 new DatabaseMigrationHelper(resources).upgradeDatabase();
             }
+            */
             jettyPort = PropertiesHelper.findHttpPort(resources);
         } catch (IoTException tde) {
             log.error("Could not initalize the service. Exiting. ", tde);
@@ -50,6 +51,7 @@ public class Main {
             System.exit(0);
         }
 
+        log.info("Creating new Jetty Server on port {}", jettyPort);
         server = new Server(jettyPort);
 
         URL url = ClassLoader.getSystemResource("webapp/WEB-INF/web.xml");

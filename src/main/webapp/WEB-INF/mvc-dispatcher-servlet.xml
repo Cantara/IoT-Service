@@ -24,8 +24,8 @@
 
         <property name="locations">
             <list>
-                <value>classpath:valuereporter.properties</value>
-                <value>file:config_override/valuereporter.properties</value>
+                <value>classpath:IoT-service.properties</value>
+                <value>file:config_override/IoT-service.properties</value>
             </list>
         </property>
     </bean>

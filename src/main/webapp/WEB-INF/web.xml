@@ -11,6 +11,10 @@
             <param-name>javax.ws.rs.Application</param-name>
             <param-value>com.altran.iot.rest.JerseyApplication</param-value>
         </init-param>
+        <init-param>
+            <param-name>jersey.config.server.tracing</param-name>
+            <param-value>ALL</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>

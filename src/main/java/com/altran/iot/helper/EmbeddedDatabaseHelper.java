@@ -1,11 +1,9 @@
 package com.altran.iot.helper;
 
 
-import com.altran.iot.IoTException;
 import org.apache.commons.dbutils.QueryRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.altran.iot.helper.StatusType;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -101,6 +99,7 @@ public class EmbeddedDatabaseHelper {
 
     protected void createUsers(Connection connection) {
         log.info("Creating Basic users.");
+        /*
         try {
             queryRunner.update(connection,"CREATE USER " + jdbcUserName + " PASSWORD "+ jdbcPassword +";");
             queryRunner.update(connection,"CREATE USER " + jdbcAdminUserName + " PASSWORD "+ jdbcAdminPassword +";");
@@ -108,9 +107,11 @@ public class EmbeddedDatabaseHelper {
         } catch (SQLException e) {
             log.info("Error creating tables", e);
         }
+        */
     }
 
     protected void createTables(Connection connection) {
+        /*
         log.info("Creating basic tables.");
         try {
             createObservedMethod(connection);
@@ -118,6 +119,7 @@ public class EmbeddedDatabaseHelper {
         } catch (SQLException e) {
             throw new IoTException("Error creating tables. Intiialization fails", e, StatusType.RETRY_NOT_POSSIBLE);
         }
+        */
     }
 
     private void createObservedMethod(Connection connection) throws SQLException {

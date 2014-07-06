@@ -25,8 +25,8 @@ public class PropertiesHelper {
     }
     public static Properties findProperties() {
         Properties properties = new Properties();
-        String classpathFileName = "valuereporter.properties";
-        String overrideFileName = "./config_override/valuereporter.properties";
+        String classpathFileName = "IoT-service.properties";
+        String overrideFileName = "./config_override/IoT-service.properties";
         FileReader classpathFile = findPropertiesFile(classpathFileName);
         FileReader overrideFile = findPropertiesFile(overrideFileName);
         if (overrideFile == null && classpathFile == null) {

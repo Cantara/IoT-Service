@@ -1,7 +1,5 @@
 package com.altran.iot.observation;
 
-import com.altran.iot.ObservationsService;
-import com.altran.iot.ObservedMethodJson;
 import com.altran.iot.QueryOperations;
 import com.altran.iot.WriteOperations;
 import com.fasterxml.jackson.core.type.TypeReference;
