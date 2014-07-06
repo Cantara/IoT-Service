@@ -1,4 +1,4 @@
-package org.valuereporter;
+package com.altran.iot;
 
 import org.valuereporter.helper.StatusType;
 
@@ -7,13 +7,13 @@ import java.util.UUID;
 /**
  *
  */
-public class ValuereporterException extends RuntimeException{
+public class IoTException extends RuntimeException{
 
     private String statusTypeText;
     private Enum<StatusType> statusType = null;
     private final UUID uuid = UUID.randomUUID();
 
-    public ValuereporterException(String msg, StatusType statusType) {
+    public IoTException(String msg, StatusType statusType) {
         super(msg);
         this.statusType = statusType;
     }
@@ -23,17 +23,17 @@ public class ValuereporterException extends RuntimeException{
      * @param e
      * @param statusType
      */
-    public ValuereporterException(String msg, Exception e, Enum<StatusType> statusType) {
+    public IoTException(String msg, Exception e, Enum<StatusType> statusType) {
         super(msg, e);
         this.statusType = statusType;
     }
 
-    public ValuereporterException(String msg, Throwable t, StatusType statusType) {
+    public IoTException(String msg, Throwable t, StatusType statusType) {
         super(msg,t);
         this.statusType = statusType;
     }
 
-    public ValuereporterException(String msg, Exception e, StatusType statusType) {
+    public IoTException(String msg, Exception e, StatusType statusType) {
         super(msg, e);
         this.statusType = statusType;
     }

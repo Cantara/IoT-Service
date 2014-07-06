@@ -1,4 +1,4 @@
-package org.valuereporter.helper;
+package com.altran.iot.helper;
 
 import java.util.Properties;
 

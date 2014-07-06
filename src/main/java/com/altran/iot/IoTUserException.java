@@ -1,4 +1,4 @@
-package org.valuereporter;
+package com.altran.iot;
 
 import org.valuereporter.helper.StatusType;
 
@@ -9,13 +9,13 @@ import org.valuereporter.helper.StatusType;
  * Time: 10:54
  * To change this template use File | Settings | File Templates.
  */
-public class ValuereporterUserException extends ValuereporterException {
+public class IoTUserException extends IoTException {
 
-    public ValuereporterUserException(String msg, StatusType statusType) {
+    public IoTUserException(String msg, StatusType statusType) {
         super(msg, statusType);
     }
 
-    public ValuereporterUserException(String msg, Exception e, StatusType statusType) {
+    public IoTUserException(String msg, Exception e, StatusType statusType) {
         super(msg, e, statusType);
     }
 }
