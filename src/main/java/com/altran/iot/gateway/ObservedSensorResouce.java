@@ -47,7 +47,7 @@ public class ObservedSensorResouce {
 
 
 
-    //http://localhost:80/iot/observedsensor
+    //http://localhost:80/iot/observe/observedsensor
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerObservationForSensor(@Context UriInfo ui, String prefix) {
