@@ -13,6 +13,7 @@ Installation
 
 * Copy Proprerties file
 ```
+wget https://raw.githubusercontent.com/altran/IoT-service/master/src/main/resources/local-overrides.properties
 mkdir config_override
 cp src/main/resources/iot-service.properties config_override/
 ```
@@ -26,6 +27,7 @@ Running IoT-service
 ===================
 
 ```
+wget http://mvnrepo.cantara.no/content/repositories/snapshots/com/altran/iot/IoT-service/0.1-SNAPSHOT/IoT-service-0.1-20140811.125511-1.jar
 java -jar target/IoT-service-0.1-SNAPSHOT-with-deps.jar
 ```
 
