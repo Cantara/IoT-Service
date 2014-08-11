@@ -28,7 +28,8 @@ Running IoT-service
 
 ```
 wget http://mvnrepo.cantara.no/content/repositories/snapshots/com/altran/iot/IoT-service/0.1-SNAPSHOT/IoT-service-0.1-20140811.125511-1.jar
-java -jar target/IoT-service-0.1-SNAPSHOT-with-deps.jar
+java -jar IoT-service-0.1-20140811.125511-1.jar
+# java -jar target/IoT-service-0.1-SNAPSHOT-with-deps.jar
 ```
 
 Database
