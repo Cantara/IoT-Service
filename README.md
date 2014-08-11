@@ -15,7 +15,7 @@ Installation
 ```
 wget https://raw.githubusercontent.com/altran/IoT-service/master/src/main/resources/local-overrides.properties
 mkdir config_override
-cp src/main/resources/iot-service.properties config_override/
+cp local-overrides.properties config_override/iot-service.properties
 ```
 * Edit iot-service to suite your environment.
 
