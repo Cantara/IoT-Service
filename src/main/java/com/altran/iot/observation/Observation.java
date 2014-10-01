@@ -202,8 +202,8 @@ public class Observation {
     }
 
 
-    //    @Override
-    public String tosString() {
+    @Override
+    public String toString() {
         return "Observation{" +
                 "radioGatewayId='" + radioGatewayId + '\'' +
                 ", radioGatewayName='" + radioGatewayName + '\'' +
