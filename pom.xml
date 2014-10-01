@@ -124,6 +124,7 @@
              Workaround when handling signed jars
              http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
             -->
+            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -138,6 +139,7 @@
                     <mainClass>com.altran.iot.Main</mainClass>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -150,6 +152,8 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>with-deps</shadedClassifierName>
                             <artifactSet>
                                 <excludes>
                                     <exclude>junit:junit</exclude>
