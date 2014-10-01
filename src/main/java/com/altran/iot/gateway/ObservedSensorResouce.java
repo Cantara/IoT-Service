@@ -9,6 +9,8 @@ import com.altran.iot.search.LuceneIndexer;
 import com.altran.iot.search.LuceneSearch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.LRUMap;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +92,7 @@ public class ObservedSensorResouce {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registerObservationForSensorGet(@QueryParam("body") String query) {
+    public Response registerObservationForSensorGet(@QueryParam("query") String query) {
         // final long observedMethods;
 
         if (query != null) {
@@ -98,17 +100,25 @@ public class ObservedSensorResouce {
             // observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
             LuceneSearch luceneSearch = new LuceneSearch(index.getDirectory());
             List<Observation> observations = luceneSearch.search(query);
-
+            String result = buildJsonResult(observations);
             log.info("Search query={} returned {} observations", query, observations.size());
-            return Response.ok(observations.toString()).build();
-
-
-
+            return Response.ok(result).build();
         } else {
             throw new UnsupportedOperationException("You must supply some body content.");
         }
 
     }
 
+
+    private String buildJsonResult(List<Observation> observations) {
+        StringBuffer resultJSON = new StringBuffer();
+        resultJSON.append("{  \n" + "   \"observations\":[");
+        for (int i = 0; i < observations.size(); i++) {
+
+            resultJSON.append(observations.get(i).toJsonString());
+            resultJSON.append(",");
+        }
+        return resultJSON.substring(0, resultJSON.length() - 1) + "]}";
+    }
 
 }

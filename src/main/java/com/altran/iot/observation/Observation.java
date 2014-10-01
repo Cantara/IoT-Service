@@ -3,6 +3,7 @@ package com.altran.iot.observation;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ public class Observation {
     private String timestampCreated;
     private String timestampReceived;
     private Map<String, String> measurements;
+
+    private String luceneJson;
 
     private static final Logger logger = LoggerFactory.getLogger(Observation.class);
 
@@ -193,12 +196,14 @@ public class Observation {
         o.timestampReceived = JsonPath.read(document, "$.timestampReceived");
 
         o.measurements = JsonPath.read(document, "$.measurements");;
+        o.luceneJson = jsondata;
 
         return o;
     }
 
-    @Override
-    public String toString() {
+
+    //    @Override
+    public String tosString() {
         return "Observation{" +
                 "radioGatewayId='" + radioGatewayId + '\'' +
                 ", radioGatewayName='" + radioGatewayName + '\'' +
@@ -211,6 +216,26 @@ public class Observation {
                 ", measurements=" + measurements +
                 '}';
     }
+
+    public String toJsonString() {
+        return "{\n" +
+                "   \"observation\":[{  \n" +
+                "      \"RadioGatewayId\":\"" + radioGatewayId + "\",\n" +
+                "      \"RadioGatewayName\":\"" + radioGatewayName + "\",\n" +
+                "      \"RadioGatewayDescription\":\"" + radioGatewayDescription + "\",\n" +
+                "      \"RadioSensorId\":\"" + radioSensorId + "\",\n" +
+                "      \"RadioSensorName\":\"" + radioSensorName + "\",\n" +
+                "      \"RadioSensorDescription\":\"" + radioSensorDescription + "\",\n" +
+                "      \"TimestampCreated\":\"" + timestampCreated + "\",\n" +
+                "      \"TimestampReceived\":\"" + timestampReceived + "\",\n" +
+                "      \"Measurements\":  \n" +
+                "         " + JSONValue.toJSONString(measurements) +
+                "          " +
+                "       }]\n" +
+                "}";
+    }
+
+
 }
 
 
