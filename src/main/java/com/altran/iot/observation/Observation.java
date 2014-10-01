@@ -219,7 +219,7 @@ public class Observation {
 
     public String toJsonString() {
         return "{\n" +
-                "   \"observation\":[{  \n" +
+                "   \"observation\":{  \n" +
                 "      \"RadioGatewayId\":\"" + radioGatewayId + "\",\n" +
                 "      \"RadioGatewayName\":\"" + radioGatewayName + "\",\n" +
                 "      \"RadioGatewayDescription\":\"" + radioGatewayDescription + "\",\n" +
@@ -231,7 +231,7 @@ public class Observation {
                 "      \"Measurements\":  \n" +
                 "         " + JSONValue.toJSONString(measurements) +
                 "          " +
-                "       }]\n" +
+                "       }\n" +
                 "}";
     }
 
