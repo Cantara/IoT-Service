@@ -121,6 +121,7 @@
             <!--
              http://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html
              Workaround when handling signed jars
+             Workaround when handling signed jars
              http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
             -->
             <plugin>
@@ -140,7 +141,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.1</version>
+                <!-- Override 2.0 set in parent -->
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -148,9 +150,11 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>with-deps</shadedClassifierName>
-
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>junit:junit</exclude>
+                                </excludes>
+                            </artifactSet>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
@@ -196,7 +200,6 @@
                                 <transformer implementation="org.apache.cxf.maven.CXFAllTransformer" />
                                  -->
                             </transformers>
-
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
