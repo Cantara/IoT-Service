@@ -8,6 +8,7 @@ import com.altran.iot.observation.ObservedMethod;
 import com.altran.iot.search.LuceneIndexer;
 import com.altran.iot.search.LuceneSearch;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.LRUMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class ObservedSensorResouce {
     private final WriteOperations writeOperations;
     private final ObjectMapper mapper;
     private final LuceneIndexer index;
+    private final LRUMap timestamps = new LRUMap(200, 200);
 
 
     /**
@@ -63,8 +65,17 @@ public class ObservedSensorResouce {
                 log.trace("registerObservationForSensor body={}", prefix);
                 //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
                 List<Observation> observations = new LinkedList<>();
-                observations.add(Observation.fromD7data(prefix));
-                index.addToIndex(observations);
+                Observation observation = Observation.fromD7data(prefix);
+                String uniquenessKey = observation.getTimestampCreated() + observation.getRadioGatewayId() + observation.getRadioSensorId();
+                if (timestamps.get(uniquenessKey) == null) {
+                    log.trace("Registered new timestamp");
+                    timestamps.put(uniquenessKey, new String("timestamp"));
+                    observations.add(Observation.fromD7data(prefix));
+                    index.addToIndex(observations);
+
+                } else {
+                    log.info("Reveived duplicate data, dropped.");
+                }
                 // observedMethods = -1;
             } else {
                 throw new UnsupportedOperationException("You must supply some body content.");
@@ -86,8 +97,6 @@ public class ObservedSensorResouce {
             // observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
             LuceneSearch luceneSearch = new LuceneSearch(index.getDirectory());
             List<Observation> observations = luceneSearch.search(prefix);
-
-            Observation observation = observations.get(0);
 
             return Response.ok(observations.toString()).build();
 
