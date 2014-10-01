@@ -94,7 +94,7 @@ public class Observation {
 
     }
 
-    public static Observation fromD7dataTemplate(String s) throws Exception{
+    public static Observation fromD7dataTemplate(String s) {
         Observation o = new Observation();
         o.radioGatewayId="001BC50C7100001E";
         o.radioGatewayName="001BC50C7100001E";
@@ -145,8 +145,14 @@ public class Observation {
         return o;
     }
 
+    public static Observation fromLucene(String radioGatewayId,String radioSensorId,String jsondata)  {
+        Observation o = new Observation();
+        o.setRadioGatewayId(radioGatewayId);
+        o.setRadioSensorId(radioSensorId);
+        return o;
+    }
 
-    @Override
+        @Override
     public String toString() {
         return "Observation{" +
                 "radioGatewayId='" + radioGatewayId + '\'' +
