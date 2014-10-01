@@ -42,7 +42,6 @@ public class LuceneIndexer {
         index = new RAMDirectory();
         try {
             index = new NIOFSDirectory(new File("lucene"));
-            LuceneIndexer myIndex = new LuceneIndexer(index);
         } catch (IOException ioe){
             logger.error("Failed to start lucene. No acces to file/directory lucene.", StatusType.RETRY_NOT_POSSIBLE);
 
@@ -76,24 +75,37 @@ public class LuceneIndexer {
     }
 
     public void addToIndex(Observation observation) {
+        logger.trace("addToIndex entry - observation:"+observation);
         try {
             IndexWriter writer = getWriter();
+            logger.trace("1");
             addToIndex(writer, observation);
+            logger.trace("2");
             writer.optimize();
+            logger.trace("3");
             writer.close();
+            logger.trace("4");
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
 
     public void addToIndex(List<Observation> observations) throws IOException {
+        logger.trace("addToIndex entry - observations:"+observations);
         IndexWriter indexWriter = new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
+        logger.trace("1");
         for (Observation observation : observations) {
+            logger.trace("2");
             Document doc = createLuceneDocument(observation);
+            logger.trace("3");
             indexWriter.addDocument(doc);
+            logger.trace("4");
         }
+        logger.trace("5");
         indexWriter.optimize();
+        logger.trace("6");
         indexWriter.close();
+        logger.trace("7");
     }
 
     /**
@@ -123,11 +135,17 @@ public class LuceneIndexer {
 
     private Document createLuceneDocument(Observation observation) {
         Document doc = new Document();
+        logger.trace("createLuceneDocument - entry - doc={}",doc);
+//        doc.add(new Field(FIELD_RADIOGATEWAY, "test", Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new Field(FIELD_RADIOGATEWAY, observation.getRadioGatewayId(), Field.Store.YES, Field.Index.ANALYZED));
+        logger.trace("createLuceneDocument - FIELD_RADIOGATEWAY ={}",observation.getRadioGatewayId());
         doc.add(new Field(FIELD_RADIOSENSOR, observation.getRadioSensorId(), Field.Store.YES, Field.Index.ANALYZED));
+        logger.trace("createLuceneDocument - FIELD_RADIOSENSOR ={}",observation.getRadioSensorId());
         doc.add(new Field(FIELD_TIMESTAMP, observation.getTimestampCreated(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        logger.trace("createLuceneDocument - FIELD_TIMESTAMP ={}",observation.getTimestampCreated());
         try {
-            doc.add(new Field(FIELD_MEASUREMENTS, mapper.writeValueAsString(observation), Field.Store.YES, Field.Index.ANALYZED));
+            doc.add(new Field(FIELD_MEASUREMENTS, mapper.writeValueAsString(observation).toString(), Field.Store.YES, Field.Index.ANALYZED));
+            logger.trace("createLuceneDocument - FIELD_MEASUREMENTS ={}",mapper.writeValueAsString(observation).toString());
         } catch (JsonProcessingException jpe) {
             logger.error("Unable to parse and map the measurements.", jpe);
 

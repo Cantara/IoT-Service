@@ -1,6 +1,7 @@
 package com.altran.iot;
 
 import com.altran.iot.helper.EmbeddedDatabaseHelper;
+import com.altran.iot.helper.FileUtils;
 import com.altran.iot.helper.PropertiesHelper;
 import com.altran.iot.helper.StatusType;
 import com.altran.iot.search.LuceneIndexer;
@@ -95,6 +96,7 @@ public class Main {
         server.setHandler(handlers);
 
         try {
+            FileUtils.deleteDirectory(new File("lucene"));
             index = new NIOFSDirectory(new File("lucene"));
             LuceneIndexer myIndex = new LuceneIndexer(index);
         } catch (IOException ioe){

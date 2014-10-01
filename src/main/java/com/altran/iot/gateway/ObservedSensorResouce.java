@@ -17,7 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * @author <a href="mailto:bard.lind@gmail.com">Bard Lind</a>
@@ -64,7 +64,9 @@ public class ObservedSensorResouce {
             if (prefix != null) {
                 log.trace("registerObservationForSensor body={}", prefix);
                 //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
-                index.addToIndex(Observation.fromD7data(prefix));
+                List<Observation> l = new LinkedList<>();
+                l.add(Observation.fromD7data(prefix));
+                index.addToIndex(l);
                 observedMethods = -1;
             } else {
                 throw new UnsupportedOperationException("You must supply some body content.");
