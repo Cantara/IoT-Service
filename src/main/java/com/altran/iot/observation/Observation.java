@@ -1,5 +1,8 @@
 package com.altran.iot.observation;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,7 +94,7 @@ public class Observation {
 
     }
 
-    public static Observation fromD7data(String s) throws Exception{
+    public static Observation fromD7dataTemplate(String s) throws Exception{
         Observation o = new Observation();
         o.radioGatewayId="001BC50C7100001E";
         o.radioGatewayName="001BC50C7100001E";
@@ -112,6 +115,36 @@ public class Observation {
         return o;
 
     }
+    public static Observation fromD7data(String inputData) throws Exception {
+        Observation o = new Observation();
+
+        int startIdx = inputData.indexOf("{");
+        int endIdx = inputData.lastIndexOf(",");
+        String json = inputData.substring(startIdx, endIdx) + "}";
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
+
+
+        JSONObject structure = (JSONObject) jsonObject.get("data");
+        String sensorID = (String) structure.keySet().toArray()[0];
+
+        JSONObject readings = (JSONObject) structure.values().toArray()[0];
+
+        o.timestampReceived = Double.toString((Double) jsonObject.get("ts"));
+        o.timestampCreated = Double.toString((Double)readings.get("ts"));
+        o.radioSensorName= (String) readings.get("uid");
+
+        Map<String,String> measurementsReceived = new HashMap<>();
+        measurementsReceived.put("sn",Long.toString((Long) readings.get("sn")));
+        measurementsReceived.put("rt",Long.toString((Long) readings.get("rt")));
+        measurementsReceived.put("lb",Long.toString((Long) readings.get("lb")));
+        measurementsReceived.put("lig",Long.toString((Long) readings.get("lig")));
+
+
+        o.measurements=measurementsReceived;
+        return o;
+    }
+
 
     @Override
     public String toString() {

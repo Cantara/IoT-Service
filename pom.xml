@@ -359,6 +359,12 @@
     </build>
 
     <dependencies>
+        <!-- Sinmple JSON parser -->
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
         <!--Codehale Metrics -->
         <dependency>
             <groupId>com.codahale.metrics</groupId>
