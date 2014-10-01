@@ -96,7 +96,7 @@ public class Main {
         server.setHandler(handlers);
 
         try {
-            FileUtils.deleteDirectory(new File("lucene"));
+            //FileUtils.deleteDirectory(new File("lucene"));
             index = new NIOFSDirectory(new File("lucene"));
             LuceneIndexer myIndex = new LuceneIndexer(index);
         } catch (IOException ioe){
