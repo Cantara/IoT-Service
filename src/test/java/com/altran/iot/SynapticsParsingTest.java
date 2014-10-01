@@ -19,7 +19,8 @@ public class SynapticsParsingTest {
 
     @Test
     public void testSimplePostData() throws Exception {
-        String inputData = "18:07:07.295 {\"ts\":1412101119002.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412101118998.6,\"sn\":24,\"lb\":77,\"lig\":428,\"rt\":0,\"uid\":\"001BC50C71000017\"}},\"now\":1412101247524.6}192.168.1.142";
+        //String inputData = "18:07:07.295 {\"ts\":1412101119002.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412101118998.6,\"sn\":24,\"lb\":77,\"lig\":428,\"rt\":0,\"uid\":\"001BC50C71000017\"}},\"now\":1412101247524.6}192.168.1.142";
+        String inputData = "{\"ts\":1412101119002.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412101118998.6,\"sn\":24,\"lb\":77,\"lig\":428,\"rt\":0,\"uid\":\"001BC50C71000017\"}},\"now\":1412101247524.6}192.168.1.142";
         String jsonResult="{\"radioGatewayId\":null,\"radioGatewayName\":null,\"radioGatewayDescription\":null,\"radioSensorId\":null,\"radioSensorName\":\"001BC50C71000017\",\"radioSensorDescription\":null,\"timestampCreated\":\"1.4121011189986E12\",\"timestampReceived\":\"1.4121011190026E12\",\"measurements\":{\"sn\":\"24\",\"rt\":\"0\",\"lb\":\"77\",\"lig\":\"428\"}}";
 
         Observation observation = Observation.fromD7data(inputData);
@@ -34,7 +35,8 @@ public class SynapticsParsingTest {
 
     @Test
     public void testSplitAndParse() throws Exception {
-        String inputData = "18:07:07.295 {\"ts\":1412101119002.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412101118998.6,\"sn\":24,\"lb\":77,\"lig\":428,\"rt\":0,\"uid\":\"001BC50C71000017\"}},\"now\":1412101247524.6}192.168.1.142";
+        //String inputData = "18:07:07.295 {\"ts\":1412101119002.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412101118998.6,\"sn\":24,\"lb\":77,\"lig\":428,\"rt\":0,\"uid\":\"001BC50C71000017\"}},\"now\":1412101247524.6}192.168.1.142";
+        String inputData = "{\"ts\":1412101119002.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412101118998.6,\"sn\":24,\"lb\":77,\"lig\":428,\"rt\":0,\"uid\":\"001BC50C71000017\"}},\"now\":1412101247524.6}192.168.1.142";
         int startIdx =inputData.indexOf("{");
         int endIdx =inputData.lastIndexOf(",");
         String json = inputData.substring(startIdx,endIdx)+"}";

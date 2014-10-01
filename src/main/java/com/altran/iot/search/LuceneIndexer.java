@@ -1,5 +1,7 @@
 package com.altran.iot.search;
 
+import com.altran.iot.IoTException;
+import com.altran.iot.helper.StatusType;
 import com.altran.iot.observation.Observation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,13 +12,18 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.NIOFSDirectory;
+import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@Service
 public class LuceneIndexer {
     private static final Logger logger = LoggerFactory.getLogger(LuceneIndexer.class);
     private final ObjectMapper mapper = new ObjectMapper();
@@ -28,8 +35,19 @@ public class LuceneIndexer {
     public static final String FIELD_MEASUREMENTS = "measurements";
 
 
-    private final Directory index;
+    private  Directory index;
     private static final Analyzer ANALYZER = new StandardAnalyzer(Version.LUCENE_31);
+
+    public LuceneIndexer(){
+        index = new RAMDirectory();
+        try {
+            index = new NIOFSDirectory(new File("lucene"));
+            LuceneIndexer myIndex = new LuceneIndexer(index);
+        } catch (IOException ioe){
+            logger.error("Failed to start lucene. No acces to file/directory lucene.", StatusType.RETRY_NOT_POSSIBLE);
+
+        }
+    }
 
     public LuceneIndexer(Directory index) {
         this.index = index;
