@@ -23,7 +23,7 @@ import java.util.List;
 public class LuceneSearch {
     private static final Logger logger = LoggerFactory.getLogger(LuceneSearch.class);
     private static final Analyzer ANALYZER = new StandardAnalyzer(Version.LUCENE_31);
-    private static final int MAX_HITS = 200;
+    private static final int MAX_HITS = 20000;
     private final Directory index;
 
     public Directory getDirectory() {
@@ -50,6 +50,7 @@ public class LuceneSearch {
         Query q;
         try {
             q = multiFieldQueryParser.parse(wildCardQuery);
+            logger.info("search q={}", q);
         } catch (ParseException e) {
             logger.error("Could not parse wildCardQuery={}. Returning empty search result.", wildCardQuery, e);
             return new ArrayList<>();
