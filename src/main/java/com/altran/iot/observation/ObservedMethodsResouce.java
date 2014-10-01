@@ -2,6 +2,7 @@ package com.altran.iot.observation;
 
 import com.altran.iot.QueryOperations;
 import com.altran.iot.WriteOperations;
+import com.altran.iot.search.LuceneIndexer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -87,6 +88,8 @@ public class ObservedMethodsResouce {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addObservationMethod(@PathParam("prefix") String prefix, String jsonBody){
         log.trace("addObservationMethod prefix {} , jsonBody {}.", prefix, jsonBody);
+
+
         List<ObservedMethod> observedMethods = null;
         try {
             observedMethods = mapper.readValue(jsonBody, new TypeReference<ArrayList<ObservedMethodJson>>(){ });

@@ -2,6 +2,8 @@ package com.altran.iot.observation;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,9 @@ public class Observation {
     private String timestampCreated;
     private String timestampReceived;
     private Map<String,String> measurements;
+
+    private static final Logger logger = LoggerFactory.getLogger(Observation.class);
+
 
     public String getRadioGatewayId() {
         return radioGatewayId;
@@ -115,33 +120,38 @@ public class Observation {
         return o;
 
     }
-    public static Observation fromD7data(String inputData) throws Exception {
+    public static Observation fromD7data(String inputData)  {
         Observation o = new Observation();
+        try {
 
-        int startIdx = inputData.indexOf("{");
-        int endIdx = inputData.lastIndexOf(",");
-        String json = inputData.substring(startIdx, endIdx) + "}";
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
-
-
-        JSONObject structure = (JSONObject) jsonObject.get("data");
-        String sensorID = (String) structure.keySet().toArray()[0];
-
-        JSONObject readings = (JSONObject) structure.values().toArray()[0];
-
-        o.timestampReceived = Double.toString((Double) jsonObject.get("ts"));
-        o.timestampCreated = Double.toString((Double)readings.get("ts"));
-        o.radioSensorName= (String) readings.get("uid");
-
-        Map<String,String> measurementsReceived = new HashMap<>();
-        measurementsReceived.put("sn",Long.toString((Long) readings.get("sn")));
-        measurementsReceived.put("rt",Long.toString((Long) readings.get("rt")));
-        measurementsReceived.put("lb",Long.toString((Long) readings.get("lb")));
-        measurementsReceived.put("lig",Long.toString((Long) readings.get("lig")));
+            int startIdx = inputData.indexOf("{");
+            int endIdx = inputData.lastIndexOf(",");
+            String json = inputData.substring(startIdx, endIdx) + "}";
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
 
 
-        o.measurements=measurementsReceived;
+            JSONObject structure = (JSONObject) jsonObject.get("data");
+            String sensorID = (String) structure.keySet().toArray()[0];
+
+            JSONObject readings = (JSONObject) structure.values().toArray()[0];
+
+            o.timestampReceived = Double.toString((Double) jsonObject.get("ts"));
+            o.timestampCreated = Double.toString((Double) readings.get("ts"));
+            o.radioSensorName = (String) readings.get("uid");
+
+            Map<String, String> measurementsReceived = new HashMap<>();
+            measurementsReceived.put("sn", Long.toString((Long) readings.get("sn")));
+            measurementsReceived.put("rt", Long.toString((Long) readings.get("rt")));
+            measurementsReceived.put("lb", Long.toString((Long) readings.get("lb")));
+            measurementsReceived.put("lig", Long.toString((Long) readings.get("lig")));
+
+
+            o.measurements = measurementsReceived;
+        } catch (Exception e){
+            logger.error("Attempting to parse Dash7 datapackage failed. Data: {}",inputData,e);
+            return Observation.fromD7dataTemplate("");
+        }
         return o;
     }
 

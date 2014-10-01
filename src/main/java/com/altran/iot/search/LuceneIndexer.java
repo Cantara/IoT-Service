@@ -17,9 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by totto on 10/1/14.
- */
 public class LuceneIndexer {
     private static final Logger logger = LoggerFactory.getLogger(LuceneIndexer.class);
     private final ObjectMapper mapper = new ObjectMapper();

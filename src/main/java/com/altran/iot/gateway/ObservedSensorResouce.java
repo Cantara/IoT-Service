@@ -2,8 +2,10 @@ package com.altran.iot.gateway;
 
 import com.altran.iot.QueryOperations;
 import com.altran.iot.WriteOperations;
+import com.altran.iot.observation.Observation;
 import com.altran.iot.observation.ObservationsService;
 import com.altran.iot.observation.ObservedMethod;
+import com.altran.iot.search.LuceneIndexer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,8 @@ public class ObservedSensorResouce {
     private final QueryOperations queryOperations;
     private final WriteOperations writeOperations;
     private final ObjectMapper mapper;
+    private final LuceneIndexer index;
+
 
     /**
     @Autowired
@@ -38,10 +42,11 @@ public class ObservedSensorResouce {
     }
      **/
     @Autowired
-    public ObservedSensorResouce(ObservationsService observationsService, ObjectMapper mapper) {
+    public ObservedSensorResouce(ObservationsService observationsService, ObjectMapper mapper, LuceneIndexer index) {
         this.queryOperations = observationsService;
         this.writeOperations = observationsService;
         this.mapper = mapper;
+        this.index = index;
     }
 
 
@@ -55,12 +60,17 @@ public class ObservedSensorResouce {
 
         final long observedMethods;
 
-        if (prefix != null ) {
-            log.trace("registerObservationForSensor body={}", prefix);
-            //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
-            observedMethods = -1;
-        } else {
-            throw new UnsupportedOperationException("You must supply some body content.");
+        try {
+            if (prefix != null) {
+                log.trace("registerObservationForSensor body={}", prefix);
+                //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
+                index.addToIndex(Observation.fromD7data(prefix));
+                observedMethods = -1;
+            } else {
+                throw new UnsupportedOperationException("You must supply some body content.");
+            }
+        } catch (Exception e){
+            throw new UnsupportedOperationException("You must supply Dash7 gw body content.");
         }
 
         return Response.ok("ok").build();

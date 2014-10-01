@@ -3,6 +3,9 @@ package com.altran.iot;
 import com.altran.iot.helper.EmbeddedDatabaseHelper;
 import com.altran.iot.helper.PropertiesHelper;
 import com.altran.iot.helper.StatusType;
+import com.altran.iot.search.LuceneIndexer;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.NIOFSDirectory;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.Server;
@@ -16,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.BindException;
 import java.net.URL;
 import java.util.Properties;
@@ -30,6 +34,7 @@ public class Main {
 
     private Server server;
     private String resourceBase;
+    private Directory index;
     private int jettyPort = -1;
 
     public Main() {
@@ -89,13 +94,19 @@ public class Main {
         handlers.setHandlers(new Handler[]{context,new DefaultHandler(),requestLogHandler});
         server.setHandler(handlers);
 
+        try {
+            index = new NIOFSDirectory(new File("lucene"));
+            LuceneIndexer myIndex = new LuceneIndexer(index);
+        } catch (IOException ioe){
+            throw new IoTException("Failed to start lucene. No acces to file/directory lucene.", StatusType.RETRY_NOT_POSSIBLE);
 
+        }
         enableRequestLogging(requestLogHandler);
 
         try {
             server.start();
         } catch (BindException be) {
-            throw new IoTException("Failed to start the server. Ther port is already in use.", StatusType.RETRY_NOT_POSSIBLE);
+            throw new IoTException("Failed to start the server. The port is already in use.", StatusType.RETRY_NOT_POSSIBLE);
         } catch (Exception e) {
             throw new IoTException("Failed to start." ,e, StatusType.RETRY_NOT_POSSIBLE);
         }
