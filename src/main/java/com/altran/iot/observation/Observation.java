@@ -155,13 +155,13 @@ public class Observation {
             logger.trace("Entry - radioSensorId:{}", o.radioSensorId);
 
             Map<String, String> measurementsReceived = new HashMap<>();
-            measurementsReceived.put("sn", Long.toString((Long) readings.get("sn")));
+            measurementsReceived.put("Serial Number", Long.toString((Long) readings.get("sn")));
             logger.trace("Entry - sn:{}", Long.toString((Long) readings.get("sn")));
             measurementsReceived.put("rt", Long.toString((Long) readings.get("rt")));
             logger.trace("Entry - rt:{}", Long.toString((Long) readings.get("rt")));
-            measurementsReceived.put("lb", Long.toString((Long) readings.get("lb")));
+            measurementsReceived.put("Link Budget", Long.toString((Long) readings.get("lb")));
             logger.trace("Entry - lb:{}", Long.toString((Long) readings.get("lb")));
-            measurementsReceived.put("lig", Long.toString((Long) readings.get("lig")));
+            measurementsReceived.put("lLight Intensity", Long.toString((Long) readings.get("lig")));
             logger.trace("Entry - lig:{}", Long.toString((Long) readings.get("lig")));
 
 
