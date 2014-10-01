@@ -26,6 +26,9 @@ public class LuceneSearch {
     private static final int MAX_HITS = 200;
     private final Directory index;
 
+    public Directory getDirectory() {
+        return index;
+    }
 
     public LuceneSearch(Directory index) {
         this.index = index;

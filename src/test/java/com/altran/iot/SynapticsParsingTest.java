@@ -2,6 +2,8 @@ package com.altran.iot;
 
 import com.altran.iot.observation.Observation;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -30,6 +32,35 @@ public class SynapticsParsingTest {
         System.out.println("Observation.json: " + j);
         assert(jsonResult.equalsIgnoreCase(j));
 
+
+    }
+
+
+    @Test
+    public void testCreateObservationFromJson(){
+        String jsonData="{  \n" +
+                "   \"radioGatewayId\":null,\n" +
+                "   \"radioGatewayName\":null,\n" +
+                "   \"radioGatewayDescription\":null,\n" +
+                "   \"radioSensorId\":null,\n" +
+                "   \"radioSensorName\":\"001BC50C71000017\",\n" +
+                "   \"radioSensorDescription\":null,\n" +
+                "   \"timestampCreated\":\"1.4121011189986E12\",\n" +
+                "   \"timestampReceived\":\"1.4121011190026E12\",\n" +
+                "   \"measurements\":{  \n" +
+                "      \"sn\":\"24\",\n" +
+                "      \"rt\":\"0\",\n" +
+                "      \"lb\":\"77\",\n" +
+                "      \"lig\":\"428\"\n" +
+                "   }\n" +
+                "}\n" +
+                "\n";
+        Observation o = Observation.fromLucene("","",jsonData);
+
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsonData);
+        Map measurements = JsonPath.read(document, "$.measurements");
+        String timestampReceived = JsonPath.read(document, "$.timestampReceived");
+        String timestampCreated = JsonPath.read(document, "$.timestampCreated");
 
     }
 

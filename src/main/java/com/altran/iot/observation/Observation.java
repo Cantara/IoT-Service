@@ -1,5 +1,7 @@
 package com.altran.iot.observation;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,7 +21,7 @@ public class Observation {
     private String radioSensorDescription;
     private String timestampCreated;
     private String timestampReceived;
-    private Map<String,String> measurements;
+    private Map<String, String> measurements;
 
     private static final Logger logger = LoggerFactory.getLogger(Observation.class);
 
@@ -96,32 +98,33 @@ public class Observation {
         this.measurements = measurements;
     }
 
-    private Observation(){
+    private Observation() {
 
     }
 
     public static Observation fromD7dataTemplate(String s) {
         Observation o = new Observation();
-        o.radioGatewayId="001BC50C7100001E";
-        o.radioGatewayName="001BC50C7100001E";
-        o.radioGatewayDescription="001BC50C7100001E";
-        o.radioSensorId="001BC50C7100001E";
-        o.radioSensorDescription="001BC50C7100001E";
-        o.radioSensorName="001BC50C7100001E";
-        o.timestampCreated="1412099476264.7";
-        o.timestampReceived="1412099476264.7";
-        Map<String,String> measurementsReveived = new HashMap<>();
-        measurementsReveived.put("SensorId1","value1");
-        measurementsReveived.put("SensorId2","value2");
-        measurementsReveived.put("SensorId3","value3");
-        measurementsReveived.put("SensorId4","value4");
-        measurementsReveived.put("SensorId5","value5");
-        measurementsReveived.put("SensorId6","value6");
-        o.measurements=measurementsReveived;
+        o.radioGatewayId = "001BC50C7100001E";
+        o.radioGatewayName = "001BC50C7100001E";
+        o.radioGatewayDescription = "001BC50C7100001E";
+        o.radioSensorId = "001BC50C7100001E";
+        o.radioSensorDescription = "001BC50C7100001E";
+        o.radioSensorName = "001BC50C7100001E";
+        o.timestampCreated = "1412099476264.7";
+        o.timestampReceived = "1412099476264.7";
+        Map<String, String> measurementsReveived = new HashMap<>();
+        measurementsReveived.put("SensorId1", "value1");
+        measurementsReveived.put("SensorId2", "value2");
+        measurementsReveived.put("SensorId3", "value3");
+        measurementsReveived.put("SensorId4", "value4");
+        measurementsReveived.put("SensorId5", "value5");
+        measurementsReveived.put("SensorId6", "value6");
+        o.measurements = measurementsReveived;
         return o;
 
     }
-    public static Observation fromD7data(String inputData)  {
+
+    public static Observation fromD7data(String inputData) {
         Observation o = new Observation();
         try {
 
@@ -129,55 +132,72 @@ public class Observation {
             int startIdx = inputData.indexOf("{");
             int endIdx = inputData.lastIndexOf(",");
             String json = inputData.substring(startIdx, endIdx) + "}";
-            o.setRadioGatewayId(inputData.substring(inputData.lastIndexOf("}")+1));
+            o.setRadioGatewayId(inputData.substring(inputData.lastIndexOf("}") + 1));
             JSONParser jsonParser = new JSONParser();
-            logger.trace("Entry - jsonParser:{}",jsonParser);
+            logger.trace("Entry - jsonParser:{}", jsonParser);
             JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
-            logger.trace("Entry - jsonObject:{}",jsonObject);
+            logger.trace("Entry - jsonObject:{}", jsonObject);
 
 
             JSONObject structure = (JSONObject) jsonObject.get("data");
-            logger.trace("Entry - structure:{}",structure);
+            logger.trace("Entry - structure:{}", structure);
             String sensorID = (String) structure.keySet().toArray()[0];
-            logger.trace("Entry - sensorID:{}",sensorID);
+            logger.trace("Entry - sensorID:{}", sensorID);
 
             JSONObject readings = (JSONObject) structure.values().toArray()[0];
-            logger.trace("Entry - readings:{}",readings);
+            logger.trace("Entry - readings:{}", readings);
 
             o.timestampReceived = Double.toString((Double) jsonObject.get("ts"));
-            logger.trace("Entry - timestampReceived:{}",o.timestampReceived);
+            logger.trace("Entry - timestampReceived:{}", o.timestampReceived);
             o.timestampCreated = Double.toString((Double) readings.get("ts"));
-            logger.trace("Entry - timestampCreated:{}",o.timestampCreated);
+            logger.trace("Entry - timestampCreated:{}", o.timestampCreated);
             o.radioSensorId = (String) readings.get("uid");
-            logger.trace("Entry - radioSensorId:{}",o.radioSensorId);
+            logger.trace("Entry - radioSensorId:{}", o.radioSensorId);
 
             Map<String, String> measurementsReceived = new HashMap<>();
             measurementsReceived.put("sn", Long.toString((Long) readings.get("sn")));
-            logger.trace("Entry - sn:{}",Long.toString((Long) readings.get("sn")));
+            logger.trace("Entry - sn:{}", Long.toString((Long) readings.get("sn")));
             measurementsReceived.put("rt", Long.toString((Long) readings.get("rt")));
-            logger.trace("Entry - rt:{}",Long.toString((Long) readings.get("rt")));
+            logger.trace("Entry - rt:{}", Long.toString((Long) readings.get("rt")));
             measurementsReceived.put("lb", Long.toString((Long) readings.get("lb")));
-            logger.trace("Entry - lb:{}",Long.toString((Long) readings.get("lb")));
+            logger.trace("Entry - lb:{}", Long.toString((Long) readings.get("lb")));
             measurementsReceived.put("lig", Long.toString((Long) readings.get("lig")));
-            logger.trace("Entry - lig:{}",Long.toString((Long) readings.get("lig")));
+            logger.trace("Entry - lig:{}", Long.toString((Long) readings.get("lig")));
 
 
             o.setMeasurements(measurementsReceived);
-        } catch (ParseException e){
-            logger.error("Attempting to parse Dash7 datapackage failed. Data: {}",inputData,e);
+        } catch (ParseException e) {
+            logger.error("Attempting to parse Dash7 datapackage failed. Data: {}", inputData, e);
             return Observation.fromD7dataTemplate("");
         }
         return o;
     }
 
-    public static Observation fromLucene(String radioGatewayId,String radioSensorId,String jsondata)  {
+    public static Observation fromLucene(String radioGatewayId, String radioSensorId, String jsondata) {
         Observation o = new Observation();
         o.setRadioGatewayId(radioGatewayId);
         o.setRadioSensorId(radioSensorId);
+
+        logger.trace("Entry - fromLucene:{}", jsondata);
+
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsondata);
+
+        if (o.getRadioSensorId()==null || o.getRadioSensorId().length()<4){
+            o.setRadioSensorId((String)JsonPath.read(document, "$.radioSensorId"));
+        }
+        if (o.getRadioGatewayId()==null || o.getRadioGatewayId().length()<4){
+            o.setRadioGatewayId((String)JsonPath.read(document, "$.radioGatewayId"));
+        }
+
+        o.timestampCreated = JsonPath.read(document, "$.timestampCreated");
+        o.timestampReceived = JsonPath.read(document, "$.timestampReceived");
+
+        o.measurements = JsonPath.read(document, "$.measurements");;
+
         return o;
     }
 
-        @Override
+    @Override
     public String toString() {
         return "Observation{" +
                 "radioGatewayId='" + radioGatewayId + '\'' +

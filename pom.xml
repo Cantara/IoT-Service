@@ -363,7 +363,21 @@
     </build>
 
     <dependencies>
-        <!-- Sinmple JSON parser -->
+        <!-- Simple JSON XPATH -->
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- Simple JSON XPATH -->
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path-assert</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Simple JSON parser -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>

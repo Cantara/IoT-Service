@@ -6,6 +6,7 @@ import com.altran.iot.observation.Observation;
 import com.altran.iot.observation.ObservationsService;
 import com.altran.iot.observation.ObservedMethod;
 import com.altran.iot.search.LuceneIndexer;
+import com.altran.iot.search.LuceneSearch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.util.*;
 
 /**
@@ -64,10 +62,10 @@ public class ObservedSensorResouce {
             if (prefix != null) {
                 log.trace("registerObservationForSensor body={}", prefix);
                 //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
-                List<Observation> l = new LinkedList<>();
-                l.add(Observation.fromD7data(prefix));
-                index.addToIndex(l);
-                observedMethods = -1;
+                List<Observation> observations = new LinkedList<>();
+                observations.add(Observation.fromD7data(prefix));
+                index.addToIndex(observations);
+                // observedMethods = -1;
             } else {
                 throw new UnsupportedOperationException("You must supply some body content.");
             }
@@ -81,16 +79,24 @@ public class ObservedSensorResouce {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerObservationForSensorGet(@QueryParam("body") String prefix) {
-        final long observedMethods;
+        // final long observedMethods;
 
         if (prefix != null ) {
             log.trace("registerObservationForSensor body={}", prefix);
-            observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
+            // observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
+            LuceneSearch luceneSearch = new LuceneSearch(index.getDirectory());
+            List<Observation> observations = luceneSearch.search(prefix);
+
+            Observation observation = observations.get(0);
+
+            return Response.ok(observations.toString()).build();
+
+
+
         } else {
             throw new UnsupportedOperationException("You must supply some body content.");
         }
 
-        return Response.ok("ok").build();
     }
 
 
