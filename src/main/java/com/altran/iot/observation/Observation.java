@@ -129,7 +129,7 @@ public class Observation {
             int startIdx = inputData.indexOf("{");
             int endIdx = inputData.lastIndexOf(",");
             String json = inputData.substring(startIdx, endIdx) + "}";
-            o.setRadioGatewayId(inputData.substring(endIdx));
+            o.setRadioGatewayId(inputData.substring(inputData.lastIndexOf("}")+1));
             JSONParser jsonParser = new JSONParser();
             logger.trace("Entry - jsonParser:{}",jsonParser);
             JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
