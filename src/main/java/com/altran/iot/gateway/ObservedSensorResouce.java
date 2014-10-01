@@ -75,7 +75,7 @@ public class ObservedSensorResouce {
                     log.info("registerObservationForSensor - added {}", observation);
 
                 } else {
-                    log.info("registerObservationForSensor - dropped - Received duplicate data, .");
+                    log.info("registerObservationForSensor - dropped - Received duplicate data. {}", observation);
                 }
                 // observedMethods = -1;
             } else {
