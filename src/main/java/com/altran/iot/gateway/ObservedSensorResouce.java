@@ -90,15 +90,16 @@ public class ObservedSensorResouce {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registerObservationForSensorGet(@QueryParam("body") String prefix) {
+    public Response registerObservationForSensorGet(@QueryParam("body") String query) {
         // final long observedMethods;
 
-        if (prefix != null ) {
-            log.trace("registerObservationForSensor body={}", prefix);
+        if (query != null) {
+            log.trace("registerObservationForSensor body={}", query);
             // observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
             LuceneSearch luceneSearch = new LuceneSearch(index.getDirectory());
-            List<Observation> observations = luceneSearch.search(prefix);
+            List<Observation> observations = luceneSearch.search(query);
 
+            log.info("Search query={} returned {} observations", query, observations.size());
             return Response.ok(observations.toString()).build();
 
 
