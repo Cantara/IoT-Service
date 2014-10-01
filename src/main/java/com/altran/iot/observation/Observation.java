@@ -156,13 +156,13 @@ public class Observation {
 
             Map<String, String> measurementsReceived = new HashMap<>();
             measurementsReceived.put("Serial Number", Long.toString((Long) readings.get("sn")));
-            logger.trace("Entry - sn:{}", Long.toString((Long) readings.get("sn")));
+            logger.trace("Entry - Serial Number:{}", Long.toString((Long) readings.get("sn")));
             measurementsReceived.put("rt", Long.toString((Long) readings.get("rt")));
             logger.trace("Entry - rt:{}", Long.toString((Long) readings.get("rt")));
             measurementsReceived.put("Link Budget", Long.toString((Long) readings.get("lb")));
-            logger.trace("Entry - lb:{}", Long.toString((Long) readings.get("lb")));
-            measurementsReceived.put("lLight Intensity", Long.toString((Long) readings.get("lig")));
-            logger.trace("Entry - lig:{}", Long.toString((Long) readings.get("lig")));
+            logger.trace("Entry - Link Budget:{}", Long.toString((Long) readings.get("lb")));
+            measurementsReceived.put("Light Intensity", Long.toString((Long) readings.get("lig")));
+            logger.trace("Entry - Light Intensity:{}", Long.toString((Long) readings.get("lig")));
 
 
             o.setMeasurements(measurementsReceived);
