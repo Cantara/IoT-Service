@@ -72,9 +72,10 @@ public class ObservedSensorResouce {
                     timestamps.put(uniquenessKey, new String("timestamp"));
                     observations.add(Observation.fromD7data(prefix));
                     index.addToIndex(observations);
+                    log.info("registerObservationForSensor - added {}", observation);
 
                 } else {
-                    log.info("Reveived duplicate data, dropped.");
+                    log.info("registerObservationForSensor - dropped - Received duplicate data, .");
                 }
                 // observedMethods = -1;
             } else {
