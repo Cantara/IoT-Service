@@ -17,7 +17,7 @@ public class LuceneSearchTest extends TestCase {
         Directory index = new RAMDirectory();
 
         LuceneIndexer luceneIndexer = new LuceneIndexer(index);
-        List<Observation> users = new ArrayList<Observation>(){{
+        List<Observation> users = new ArrayList<Observation>() {{
             add(createObservation("kari.norman@example.com", "Kari"));
             add(createObservation("ola@example.com", "Ola"));
             add(createObservation("medel.svenson@example.com", "Ola"));
@@ -42,7 +42,7 @@ public class LuceneSearchTest extends TestCase {
         RAMDirectory index = new RAMDirectory();
 
         LuceneIndexer luceneIndexer = new LuceneIndexer(index);
-        List<Observation> users = new ArrayList<Observation>(){{
+        List<Observation> users = new ArrayList<Observation>() {{
             add(createObservation("kari.norman@example.com", "Kari"));
             add(createObservation("ola@example.com", "Ola"));
             add(createObservation("medel.svenson@example.com", "Medel"));
@@ -62,7 +62,7 @@ public class LuceneSearchTest extends TestCase {
     public void testmodifyuser() throws IOException {
         RAMDirectory index = new RAMDirectory();
         LuceneIndexer luceneIndexer = new LuceneIndexer(index);
-        List<Observation> users = new ArrayList<Observation>(){{
+        List<Observation> users = new ArrayList<Observation>() {{
             add(createObservation("kari.norman@example.com", "Kari"));
             add(createObservation("ola@example.com", "Ola"));
             add(createObservation("medel.svenson@example.com", "Medel"));
@@ -85,7 +85,7 @@ public class LuceneSearchTest extends TestCase {
     public void testwildcardsearch() throws IOException {
         Directory index = new RAMDirectory();
         LuceneIndexer luceneIndexer = new LuceneIndexer(index);
-        List<Observation> users = new ArrayList<Observation>(){{
+        List<Observation> users = new ArrayList<Observation>() {{
             add(createObservation("kari.norman@example.com", "Kari"));
             add(createObservation("ola@example.com", "Ola"));
             add(createObservation("medel.svenson@example.com", "Medel"));
@@ -106,14 +106,13 @@ public class LuceneSearchTest extends TestCase {
         Directory index = new RAMDirectory();
 
         LuceneIndexer luceneIndexer = new LuceneIndexer(index);
-        List<Observation> observations = new ArrayList<Observation>(){{
+        List<Observation> observations = new ArrayList<Observation>() {{
             add(createObservation("kari.norman@example.com", "Kari"));
             add(createObservation("ola@example.com", "Ola"));
             add(createObservation("medel.svenson@example.com", "Ola"));
 
         }};
         luceneIndexer.addToIndex(observations);
-        System.out.println(observations);
         LuceneSearch luceneSearch = new LuceneSearch(index);
         List<Observation> result = luceneSearch.search("Ola");
         assertEquals(2, result.size());
@@ -138,7 +137,7 @@ public class LuceneSearchTest extends TestCase {
 
 
     private static Observation createObservation(String radioSensorId, String radioGatewayId) {
-        Observation observation =  Observation.fromD7dataTemplate("");
+        Observation observation = Observation.fromD7dataTemplate("");
         observation.setRadioSensorId(radioSensorId);
         observation.setRadioGatewayId(radioGatewayId);
         return observation;
