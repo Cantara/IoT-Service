@@ -144,6 +144,16 @@ public class SynapticsParsingTest {
         List<Observation> res = Observation.fromD7Data(inputData);
 
     }
+
+    @Test
+    public void testMappingFromLucene() {
+        String inputData = "{observation={RadioGatewayId=192.168.1.142, RadioGatewayName=null, RadioGatewayDescription=null, RadioSensorId=001BC50C71000017, RadioSensorName=null, RadioSensorDescription=null, TimestampCreated=1412231999149, TimestampReceived=1412231999149, Measurements={uid=001BC50C71000017, sn=8, ts=1.4122309011679E12, rt=0, lb=91, lig=2676}}}}";
+
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
+
+        System.out.println(JsonPath.read(document, "$..TimestampCreated[0]"));
+    }
+
 }
 
 

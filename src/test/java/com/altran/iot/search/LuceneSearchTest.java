@@ -113,10 +113,12 @@ public class LuceneSearchTest extends TestCase {
 
         }};
         luceneIndexer.addToIndex(observations);
+        System.out.println(observations);
         LuceneSearch luceneSearch = new LuceneSearch(index);
         List<Observation> result = luceneSearch.search("Ola");
         assertEquals(2, result.size());
     }
+
 
     @Test
     public void testSensorData4() throws IOException {
@@ -129,6 +131,8 @@ public class LuceneSearchTest extends TestCase {
                 ",\"hum\":39}},\"now\":1412236051093}192.168.1.142";
         List<Observation> observations = Observation.fromD7Data(inputData);
         luceneIndexer.addToIndex(observations);
+        LuceneSearch luceneSearch = new LuceneSearch(index);
+        List<Observation> result = luceneSearch.search("192");
 
     }
 

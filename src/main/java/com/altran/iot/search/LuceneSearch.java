@@ -23,7 +23,7 @@ import java.util.List;
 public class LuceneSearch {
     private static final Logger logger = LoggerFactory.getLogger(LuceneSearch.class);
     private static final Analyzer ANALYZER = new StandardAnalyzer(Version.LUCENE_31);
-    private static final int MAX_HITS = 20000;
+    private static final int MAX_HITS = 200;
     private final Directory index;
 
     public Directory getDirectory() {
@@ -65,6 +65,7 @@ public class LuceneSearch {
             for (ScoreDoc hit : topDocs.scoreDocs) {
                 int docId = hit.doc;
                 Document d = searcher.doc(docId);
+                logger.trace("added observation to result: " + d);
                 Observation observation =  Observation.fromLucene(d.get(LuceneIndexer.FIELD_RADIOGATEWAY),d.get(LuceneIndexer.FIELD_RADIOSENSOR),d.get(LuceneIndexer.FIELD_MEASUREMENTS));
                 //System.out.println(user.getUsername() + " : " + hit.score);
                 result.add(observation);

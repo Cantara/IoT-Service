@@ -49,7 +49,7 @@ public class LuceneIndexer {
         try {
             index = new NIOFSDirectory(new File("lucene"));
         } catch (IOException ioe){
-            logger.error("Failed to start lucene. No acces to file/directory lucene.", StatusType.RETRY_NOT_POSSIBLE);
+            logger.error("Failed to start lucene. No access to file/directory lucene.", StatusType.RETRY_NOT_POSSIBLE);
 
         }
     }
@@ -148,7 +148,7 @@ public class LuceneIndexer {
         doc.add(new Field(FIELD_TIMESTAMP, observation.getTimestampCreated(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         logger.trace("createLuceneDocument - FIELD_TIMESTAMP ={}", observation.getTimestampCreated());
         doc.add(new Field(FIELD_MEASUREMENTS, observation.toJsonString(), Field.Store.YES, Field.Index.ANALYZED));
-            logger.trace("createLuceneDocument - FIELD_MEASUREMENTS ={}", observation.toJsonString());
+        logger.trace("createLuceneDocument - FIELD_MEASUREMENTS ={}", observation.toJsonString());
         return doc;
     }
 
