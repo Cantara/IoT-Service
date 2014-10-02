@@ -156,6 +156,13 @@ public class SynapticsParsingTest {
         List<Observation> res = Observation.fromD7Data(inputData);
     }
 
+
+    @Test
+    public void testSensorData7() {
+        String inputData = "{\"ts\":1412278000983.2,\"data\":{\"001BC50C71000017\":{\"ts\":1412264622871.8,\"sn\":0,\"lb\":70,\"lig\":3937,\"rt\":0,\"uid\":\"001BC50C71000017\"},\"001BC50C7100001E\":{\"uid\":\"001BC50C7100001E\",\"sn\":29,\"rt\":0,\"pre\":1025,\"lig\":130,\"lb\":47,\"ts\":1412276361568.5},\"001BC50C7100001F\":{\"ts\":1412264781480.6,\"sn\":0,\"lb\":44,\"lig\":3882,\"rt\":0,\"uid\":\"001BC50C7100001F\"},\"001BC50C71000019\":{\"ts\":1412278000979.4,\"sn\":60,\"lb\":80,\"rt\":0,\"x\":-31,\"btn2\":1412264580802.2,\"btn1\":1412264580964.4,\"uid\":\"001BC50C71000019\",\"tmp\":24,\"z\":40,\"pre\":1021,\"lig\":111,\"y\":-29,\"hum\":35}},\"now\":1412278001141}192.168.1.168";
+        List<Observation> res = Observation.fromD7Data(inputData);
+
+    }
     @Test
     public void testMappingFromLucene() {
         String inputData = "{\n" +

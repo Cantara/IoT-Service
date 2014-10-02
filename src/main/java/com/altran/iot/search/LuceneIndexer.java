@@ -10,9 +10,11 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
@@ -35,6 +37,7 @@ public class LuceneIndexer {
     public static final String FIELD_TIMESTAMP = "timestamp";
     public static final String FIELD_MEASUREMENTS = "measurements";
     private final LRUMap timestamps = new LRUMap(200, 200);
+    private static IndexWriter indexWriter;
 
 
     public Directory getDirectory() {
@@ -52,10 +55,31 @@ public class LuceneIndexer {
             logger.error("Failed to start lucene. No access to file/directory lucene.", StatusType.RETRY_NOT_POSSIBLE);
 
         }
+        try {
+            indexWriter = new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
+        } catch (CorruptIndexException cie) {
+            logger.error("Could not open writer to Lucene index - CorruptIndexException");
+        } catch (LockObtainFailedException lore) {
+            logger.error("Could not open writer to Lucene index - LockObtainFailedException");
+
+        } catch (IOException ioe) {
+            logger.error("Could not open writer to Lucene index - IOException");
+        }
     }
 
     public LuceneIndexer(Directory index) {
         this.index = index;
+        try {
+            indexWriter = new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
+        } catch (CorruptIndexException cie) {
+            logger.error("Could not open writer to Lucene index - CorruptIndexException");
+        } catch (LockObtainFailedException lore) {
+            logger.error("Could not open writer to Lucene index - LockObtainFailedException");
+
+        } catch (IOException ioe) {
+            logger.error("Could not open writer to Lucene index - IOException");
+        }
+
     }
 
     public void removeFromIndex(String timestamp) {
@@ -94,13 +118,13 @@ public class LuceneIndexer {
 
     public void addToIndex(List<Observation> observations) throws IOException {
         logger.trace("addToIndex entry - observations:"+observations);
-        IndexWriter indexWriter = new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
         for (Observation observation : observations) {
             String uniquenessKey = observation.getTimestampCreated() + observation.getRadioGatewayId() + observation.getRadioSensorId();
             if (timestamps.get(uniquenessKey) == null) {
                 logger.trace("Registered new timestamp");
                 timestamps.put(uniquenessKey, new String("timestamp"));
                 Document doc = createLuceneDocument(observation);
+
                 indexWriter.addDocument(doc);
             } else {
                 logger.info("registerObservationForSensor - dropped - Received duplicate data. {}", observation);
