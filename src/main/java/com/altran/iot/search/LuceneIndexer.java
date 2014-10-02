@@ -44,14 +44,14 @@ public class LuceneIndexer {
         return index;
     }
 
-    private  Directory index;
+    private Directory index;
     private static final Analyzer ANALYZER = new StandardAnalyzer(Version.LUCENE_31);
 
-    public LuceneIndexer(){
+    public LuceneIndexer() {
         index = new RAMDirectory();
         try {
             index = new NIOFSDirectory(new File("lucene"));
-        } catch (IOException ioe){
+        } catch (IOException ioe) {
             logger.error("Failed to start lucene. No access to file/directory lucene.", StatusType.RETRY_NOT_POSSIBLE);
 
         }
@@ -105,7 +105,7 @@ public class LuceneIndexer {
     }
 
     public void addToIndex(Observation observation) {
-        logger.trace("addToIndex entry - observation:"+observation);
+        logger.trace("addToIndex entry - observation:" + observation);
         try {
             IndexWriter writer = getWriter();
             addToIndex(writer, observation);
@@ -117,7 +117,7 @@ public class LuceneIndexer {
     }
 
     public void addToIndex(List<Observation> observations) throws IOException {
-        logger.trace("addToIndex entry - observations:"+observations);
+        logger.trace("addToIndex entry - observations:" + observations);
         for (Observation observation : observations) {
             String uniquenessKey = observation.getTimestampCreated() + observation.getRadioGatewayId() + observation.getRadioSensorId();
             if (timestamps.get(uniquenessKey) == null) {
@@ -133,7 +133,6 @@ public class LuceneIndexer {
 
 
         indexWriter.optimize();
-        indexWriter.close();
     }
 
     /**
@@ -163,7 +162,7 @@ public class LuceneIndexer {
 
     private Document createLuceneDocument(Observation observation) {
         Document doc = new Document();
-        logger.trace("createLuceneDocument - entry - doc={}",doc);
+        logger.trace("createLuceneDocument - entry - doc={}", doc);
 //        doc.add(new Field(FIELD_RADIOGATEWAY, "test", Field.Store.YES, Field.Index.ANALYZED));
         doc.add(new Field(FIELD_RADIOGATEWAY, observation.getRadioGatewayId(), Field.Store.YES, Field.Index.ANALYZED));
         logger.trace("createLuceneDocument - FIELD_RADIOGATEWAY ={}", observation.getRadioGatewayId());
