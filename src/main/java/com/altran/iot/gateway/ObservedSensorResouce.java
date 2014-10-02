@@ -74,7 +74,7 @@ public class ObservedSensorResouce {
                 throw new UnsupportedOperationException("You must supply some body content.");
             }
         } catch (Exception e){
-            throw new UnsupportedOperationException("You must supply Dash7 gw body content.", e);
+            throw new UnsupportedOperationException("You must supply Dash7 gw body content.  body={" + prefix + "}\n", e);
         }
 
         return Response.ok("ok").build();
