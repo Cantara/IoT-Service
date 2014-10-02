@@ -147,13 +147,8 @@ public class LuceneIndexer {
         logger.trace("createLuceneDocument - FIELD_RADIOSENSOR ={}", observation.getRadioSensorId());
         doc.add(new Field(FIELD_TIMESTAMP, observation.getTimestampCreated(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         logger.trace("createLuceneDocument - FIELD_TIMESTAMP ={}", observation.getTimestampCreated());
-        try {
-            doc.add(new Field(FIELD_MEASUREMENTS, mapper.writeValueAsString(observation).toString(), Field.Store.YES, Field.Index.ANALYZED));
+        doc.add(new Field(FIELD_MEASUREMENTS, observation.toJsonString(), Field.Store.YES, Field.Index.ANALYZED));
             logger.trace("createLuceneDocument - FIELD_MEASUREMENTS ={}", observation.toJsonString());
-        } catch (JsonProcessingException jpe) {
-            logger.error("Unable to parse and map the measurements.", jpe);
-
-        }
         return doc;
     }
 

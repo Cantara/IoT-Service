@@ -134,6 +134,16 @@ public class SynapticsParsingTest {
         List<Observation> res = Observation.fromD7Data(inputData);
 
     }
+
+    @Test
+    public void testSensorData4() {
+        String inputData = "{\"ts\":1412231999149,\"data\":{\"001BC50C71000017\":{\"ts\":1412230901167.9,\"sn\":8,\"lb" +
+                "\":91,\"lig\":2676,\"rt\":0,\"uid\":\"001BC50C71000017\"},\"001BC50C71000019\":{\"uid\":\"001" +
+                "BC50C71000019\",\"ts\":1412231999144.8,\"tmp\":25,\"sn\":190,\"lb\":90,\"lig\":2999,\"rt\":0" +
+                ",\"hum\":39}},\"now\":1412236051093}192.168.1.142";
+        List<Observation> res = Observation.fromD7Data(inputData);
+
+    }
 }
 
 

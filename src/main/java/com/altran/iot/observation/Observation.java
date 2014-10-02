@@ -147,6 +147,8 @@ public class Observation {
             logger.trace("Entry - timestampCreated:{}", o.timestampCreated);
             o.radioSensorId = key.toString();
             logger.trace("Entry - radioSensorId:{}", o.radioSensorId);
+            o.setRadioGatewayId(inputData.substring(inputData.lastIndexOf("}") + 1));
+
             // System.out.println("Sensorvalues = " + observations.get(key));
             Map sensorvalues = (Map) observations.get(key);
             Map<String, String> measurementsReceived = new HashMap<>();
