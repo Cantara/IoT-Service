@@ -37,8 +37,7 @@ public class LuceneIndexer {
     public static final String FIELD_TIMESTAMP = "timestamp";
     public static final String FIELD_MEASUREMENTS = "measurements";
     private final LRUMap timestamps = new LRUMap(200, 200);
-    private static IndexWriter indexWriter;
-
+    private IndexWriter indexWriter;
 
     public Directory getDirectory() {
         return index;
@@ -55,30 +54,11 @@ public class LuceneIndexer {
             logger.error("Failed to start lucene. No access to file/directory lucene.", StatusType.RETRY_NOT_POSSIBLE);
 
         }
-        try {
-            indexWriter = new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
-        } catch (CorruptIndexException cie) {
-            logger.error("Could not open writer to Lucene index - CorruptIndexException");
-        } catch (LockObtainFailedException lore) {
-            logger.error("Could not open writer to Lucene index - LockObtainFailedException");
-
-        } catch (IOException ioe) {
-            logger.error("Could not open writer to Lucene index - IOException");
-        }
     }
 
     public LuceneIndexer(Directory index) {
-        this.index = index;
-        try {
-            indexWriter = new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
-        } catch (CorruptIndexException cie) {
-            logger.error("Could not open writer to Lucene index - CorruptIndexException");
-        } catch (LockObtainFailedException lore) {
-            logger.error("Could not open writer to Lucene index - LockObtainFailedException");
 
-        } catch (IOException ioe) {
-            logger.error("Could not open writer to Lucene index - IOException");
-        }
+        this.index = index;
 
     }
 
@@ -125,14 +105,17 @@ public class LuceneIndexer {
                 timestamps.put(uniquenessKey, new String("timestamp"));
                 Document doc = createLuceneDocument(observation);
 
-                indexWriter.addDocument(doc);
+                IndexWriter iWriter = getWriter();
+
+                iWriter.addDocument(doc);
+                iWriter.optimize();
+                iWriter.commit();
             } else {
                 logger.info("registerObservationForSensor - dropped - Received duplicate data. {}", observation);
             }
         }
 
 
-        indexWriter.optimize();
     }
 
     /**
@@ -148,7 +131,10 @@ public class LuceneIndexer {
      *                                                           IO error
      */
     public IndexWriter getWriter() throws IOException {
-        return new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
+        if (indexWriter == null) {
+            indexWriter = new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
+        }
+        return indexWriter;
     }
 
     public void addToIndex(IndexWriter writer, Observation user) {
