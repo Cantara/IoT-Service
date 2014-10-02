@@ -32,7 +32,6 @@ public class ObservedSensorResouce {
     private final WriteOperations writeOperations;
     private final ObjectMapper mapper;
     private final LuceneIndexer index;
-    private final LRUMap timestamps = new LRUMap(200, 200);
 
 
     /**
@@ -66,19 +65,8 @@ public class ObservedSensorResouce {
             if (prefix != null) {
                 log.trace("registerObservationForSensor body={}", prefix);
                 //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
-                List<Observation> observations = new LinkedList<>();
-                Observation observation = Observation.fromD7data(prefix);
-                String uniquenessKey = observation.getTimestampCreated() + observation.getRadioGatewayId() + observation.getRadioSensorId();
-                if (timestamps.get(uniquenessKey) == null) {
-                    log.trace("Registered new timestamp");
-                    timestamps.put(uniquenessKey, new String("timestamp"));
-                    observations.add(Observation.fromD7data(prefix));
-                    index.addToIndex(observations);
-                    log.info("registerObservationForSensor - added {}", observation);
-
-                } else {
-                    log.info("registerObservationForSensor - dropped - Received duplicate data. {}", observation);
-                }
+                List<Observation> observations = Observation.fromD7Data(prefix);
+                index.addToIndex(observations);
                 // observedMethods = -1;
             } else {
                 throw new UnsupportedOperationException("You must supply some body content.");

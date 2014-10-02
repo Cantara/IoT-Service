@@ -9,7 +9,9 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Observation {
@@ -127,6 +129,42 @@ public class Observation {
 
     }
 
+
+    public static List<Observation> fromD7Data(String inputData) {
+
+        List<Observation> robservations = new ArrayList<Observation>();
+
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
+        System.out.println((Map) JsonPath.read(document, "$.data"));
+
+        Map observations = (Map) JsonPath.read(document, "$.data");
+        for (Object key : observations.keySet()) {
+            System.out.println("\n\nRadioSensor = " + key);
+            Observation o = new Observation();
+            o.timestampReceived = getString("ts", inputData);
+            logger.trace("Entry - timestampReceived:{}", o.timestampReceived);
+            o.timestampCreated = getString("ts", inputData);
+            logger.trace("Entry - timestampCreated:{}", o.timestampCreated);
+            o.radioSensorId = key.toString();
+            logger.trace("Entry - radioSensorId:{}", o.radioSensorId);
+            // System.out.println("Sensorvalues = " + observations.get(key));
+            Map sensorvalues = (Map) observations.get(key);
+            Map<String, String> measurementsReceived = new HashMap<>();
+            for (Object sensortype : sensorvalues.keySet()) {
+                System.out.print("Sensortype =" + sensortype);
+                System.out.println("  Sensorreading =" + sensorvalues.get(sensortype));
+                measurementsReceived.put(sensortype.toString(), sensorvalues.get(sensortype).toString());
+            }
+            o.setMeasurements(measurementsReceived);
+
+            robservations.add(o);
+        }
+        //Observation observation = Observation.fromD7data(inputData);
+
+        return robservations;
+    }
+
+
     public static Observation fromD7data(String inputData) {
         Observation o = new Observation();
         try {
@@ -150,9 +188,9 @@ public class Observation {
             JSONObject readings = (JSONObject) structure.values().toArray()[0];
             logger.trace("Entry - readings:{}", readings);
 
-            o.timestampReceived = Double.toString((Double) jsonObject.get("ts"));
+            o.timestampReceived = getString("ts", inputData);
             logger.trace("Entry - timestampReceived:{}", o.timestampReceived);
-            o.timestampCreated = Double.toString((Double) readings.get("ts"));
+            o.timestampCreated = getString("ts", inputData);
             logger.trace("Entry - timestampCreated:{}", o.timestampCreated);
             o.radioSensorId = (String) readings.get("uid");
             logger.trace("Entry - radioSensorId:{}", o.radioSensorId);
@@ -176,6 +214,21 @@ public class Observation {
         return o;
     }
 
+    private static String getString(String key, String inputData) {
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
+
+        try {
+            System.out.println((Double) JsonPath.read(document, "$." + key));
+            Double v = (Double) JsonPath.read(document, "$." + key);
+            return Double.toString(v);
+        } catch (ClassCastException cce) {
+            System.out.println((Long) JsonPath.read(document, "$." + key));
+            Long v = (Long) JsonPath.read(document, "$." + key);
+            return Long.toString(v);
+        }
+
+    }
+
     public static Observation fromLucene(String radioGatewayId, String radioSensorId, String jsondata) {
         Observation o = new Observation();
         o.setRadioGatewayId(radioGatewayId);
@@ -185,17 +238,18 @@ public class Observation {
 
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsondata);
 
-        if (o.getRadioSensorId()==null || o.getRadioSensorId().length()<4){
-            o.setRadioSensorId((String)JsonPath.read(document, "$.radioSensorId"));
+        if (o.getRadioSensorId() == null || o.getRadioSensorId().length() < 4) {
+            o.setRadioSensorId((String) JsonPath.read(document, "$.radioSensorId"));
         }
-        if (o.getRadioGatewayId()==null || o.getRadioGatewayId().length()<4){
-            o.setRadioGatewayId((String)JsonPath.read(document, "$.radioGatewayId"));
+        if (o.getRadioGatewayId() == null || o.getRadioGatewayId().length() < 4) {
+            o.setRadioGatewayId((String) JsonPath.read(document, "$.radioGatewayId"));
         }
 
         o.timestampCreated = JsonPath.read(document, "$.timestampCreated");
         o.timestampReceived = JsonPath.read(document, "$.timestampReceived");
 
-        o.measurements = JsonPath.read(document, "$.measurements");;
+        o.measurements = JsonPath.read(document, "$.measurements");
+        ;
         o.luceneJson = jsondata;
 
         return o;

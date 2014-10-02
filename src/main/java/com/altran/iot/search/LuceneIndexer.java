@@ -5,6 +5,7 @@ import com.altran.iot.helper.StatusType;
 import com.altran.iot.observation.Observation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.LRUMap;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -33,6 +34,7 @@ public class LuceneIndexer {
     public static final String FIELD_RADIOSENSOR = "radiosensor";
     public static final String FIELD_TIMESTAMP = "timestamp";
     public static final String FIELD_MEASUREMENTS = "measurements";
+    private final LRUMap timestamps = new LRUMap(200, 200);
 
 
     public Directory getDirectory() {
@@ -94,9 +96,18 @@ public class LuceneIndexer {
         logger.trace("addToIndex entry - observations:"+observations);
         IndexWriter indexWriter = new IndexWriter(index, ANALYZER, IndexWriter.MaxFieldLength.UNLIMITED);
         for (Observation observation : observations) {
-            Document doc = createLuceneDocument(observation);
-            indexWriter.addDocument(doc);
+            String uniquenessKey = observation.getTimestampCreated() + observation.getRadioGatewayId() + observation.getRadioSensorId();
+            if (timestamps.get(uniquenessKey) == null) {
+                logger.trace("Registered new timestamp");
+                timestamps.put(uniquenessKey, new String("timestamp"));
+                Document doc = createLuceneDocument(observation);
+                indexWriter.addDocument(doc);
+            } else {
+                logger.info("registerObservationForSensor - dropped - Received duplicate data. {}", observation);
+            }
         }
+
+
         indexWriter.optimize();
         indexWriter.close();
     }

@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,10 +28,6 @@ public class SynapticsParsingTest {
 
         Observation observation = Observation.fromD7data(inputData);
         String r = observation.toString();
-        String j=mapper.writeValueAsString(observation);
-        System.out.println("Observation: " + r);
-        System.out.println("Observation.json: " + j);
-        assert(jsonResult.equalsIgnoreCase(j));
 
 
     }
@@ -91,6 +88,50 @@ public class SynapticsParsingTest {
         System.out.println("Found timestamp: " + structure.get("lb"));
 
 
+    }
+
+    @Test
+    public void testSensorData2() {
+        String inputData = "{\"ts\":1412231188318.1,\"data\":{\"001BC50C71000017\":{\"ts\":1412230901167.9,\"sn\":8,\"\n" +
+                "lb\":91,\"lig\":2676,\"rt\":0,\"uid\":\"001BC50C71000017\"},\"001BC50C71000019\":{\"uid\":\"0\n" +
+                "01BC50C71000019\",\"ts\":1412231188314,\"tmp\":25,\"sn\":52,\"lb\":89,\"lig\":2749,\"rt\":0,\n" +
+                "\"hum\":39}},\"now\":1412231188865.8}192.168.1.142";
+
+
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
+
+        System.out.println((Double) JsonPath.read(document, "$.ts"));
+        System.out.println((Map) JsonPath.read(document, "$.data"));
+        Map map = (Map) JsonPath.read(document, "$.data");
+        Map map2 = (Map) map.get("001BC50C71000017");
+        //System.out.println("lig:{}",Double.toString(map2.get("lig")));
+        Observation observation = Observation.fromD7data(inputData);
+
+        System.out.printf("Observation:{}" + observation.toJsonString());
+        assert (true);
+    }
+
+    @Test
+    public void testSensorData3() {
+        String inputData = "{\"ts\":1412231999149,\"data\":{\"001BC50C71000017\":{\"ts\":1412230901167.9,\"sn\":8,\"lb" +
+                "\":91,\"lig\":2676,\"rt\":0,\"uid\":\"001BC50C71000017\"},\"001BC50C71000019\":{\"uid\":\"001" +
+                "BC50C71000019\",\"ts\":1412231999144.8,\"tmp\":25,\"sn\":190,\"lb\":90,\"lig\":2999,\"rt\":0" +
+                ",\"hum\":39}},\"now\":1412232202945.3}192.168.1.142";
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
+
+        System.out.println((Map) JsonPath.read(document, "$.data"));
+
+        Map observations = (Map) JsonPath.read(document, "$.data");
+        for (Object key : observations.keySet()) {
+            System.out.println("\n\nRadioSensor = " + key);
+            // System.out.println("Sensorvalues = " + observations.get(key));
+            Map sensorvalues = (Map) observations.get(key);
+            for (Object sensortype : sensorvalues.keySet()) {
+                System.out.print("Sensortype =" + sensortype);
+                System.out.println("  Sensorreading =" + sensorvalues.get(sensortype));
+            }
+        }
+        List<Observation> res = Observation.fromD7Data(inputData);
 
     }
 }
