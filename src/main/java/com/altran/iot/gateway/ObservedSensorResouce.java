@@ -66,7 +66,7 @@ public class ObservedSensorResouce {
         try {
             if (prefix != null) {
                 log.trace("registerObservationForSensor body={}", prefix);
-                if (prefix.length() > 10) {
+                if (prefix.length() > 20) {
                     //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
                     List<Observation> observations = Observation.fromD7Data(prefix);
                     index.addToIndex(observations);
