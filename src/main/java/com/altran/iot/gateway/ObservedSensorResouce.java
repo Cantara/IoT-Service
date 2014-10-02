@@ -66,12 +66,18 @@ public class ObservedSensorResouce {
         try {
             if (prefix != null) {
                 log.trace("registerObservationForSensor body={}", prefix);
-                //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
-                List<Observation> observations = Observation.fromD7Data(prefix);
-                index.addToIndex(observations);
+                if (prefix.length() > 10) {
+                    //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
+                    List<Observation> observations = Observation.fromD7Data(prefix);
+                    index.addToIndex(observations);
+
+                } else {
+                    log.error("You must supply some body content. body=" + prefix + "\n");
+
+                }
                 // observedMethods = -1;
             } else {
-                throw new UnsupportedOperationException("You must supply some body content.");
+                log.error("You must supply some body content.");
             }
         } catch (Exception e){
             throw new UnsupportedOperationException("You must supply Dash7 gw body content.  body=" + prefix + "\n", e);
