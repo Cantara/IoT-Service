@@ -135,11 +135,10 @@ public class Observation {
         List<Observation> robservations = new ArrayList<Observation>();
 
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
-        System.out.println((Map) JsonPath.read(document, "$.data"));
 
         Map observations = (Map) JsonPath.read(document, "$.data");
         for (Object key : observations.keySet()) {
-            System.out.println("\n\nRadioSensor = " + key);
+            logger.trace("\n\nRadioSensor = " + key);
             Observation o = new Observation();
             o.timestampReceived = getString("ts", inputData);
             logger.trace("Entry - timestampReceived:{}", o.timestampReceived);
@@ -153,8 +152,8 @@ public class Observation {
             Map sensorvalues = (Map) observations.get(key);
             Map<String, String> measurementsReceived = new HashMap<>();
             for (Object sensortype : sensorvalues.keySet()) {
-                System.out.print("Sensortype =" + sensortype);
-                System.out.println("  Sensorreading =" + sensorvalues.get(sensortype));
+                logger.trace("Sensortype =" + sensortype);
+                logger.trace("  Sensorreading =" + sensorvalues.get(sensortype));
                 measurementsReceived.put(sensortype.toString(), sensorvalues.get(sensortype).toString());
             }
             o.setMeasurements(measurementsReceived);
@@ -220,11 +219,9 @@ public class Observation {
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
 
         try {
-            System.out.println((Double) JsonPath.read(document, "$." + key));
             Double v = (Double) JsonPath.read(document, "$." + key);
             return Double.toString(v);
         } catch (ClassCastException cce) {
-            System.out.println((Long) JsonPath.read(document, "$." + key));
             Long v = (Long) JsonPath.read(document, "$." + key);
             return Long.toString(v);
         }
@@ -246,7 +243,6 @@ public class Observation {
         if (o.getRadioGatewayId() == null || o.getRadioGatewayId().length() < 4) {
             o.setRadioGatewayId((String) JsonPath.read(document, "$.observation.RadioGatewayId"));
         }
-        System.out.println("Mapping document:" + document);
         o.timestampCreated = JsonPath.read(document, "$.observation.TimestampCreated");
         o.timestampReceived = JsonPath.read(document, "$.observation.TimestampReceived");
 
