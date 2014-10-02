@@ -132,8 +132,27 @@ public class LuceneSearchTest extends TestCase {
         luceneIndexer.addToIndex(observations);
         LuceneSearch luceneSearch = new LuceneSearch(index);
         List<Observation> result = luceneSearch.search("192");
+        assertTrue(result.size() >= 1);
 
     }
+
+    @Test
+    public void testSensorData5() throws IOException {
+        Directory index = new RAMDirectory();
+
+        LuceneIndexer luceneIndexer = new LuceneIndexer(index);
+        String inputData = "{\"ts\":1412266891761.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412264622871.8,\"sn\":0,\"lb\":70,\"lig\":3937,\"rt\":0,\"uid\":\"001BC50C71000017\"},\"001BC50C710\n" +
+                "0001F\":{\"ts\":1412264781480.6,\"sn\":0,\"lb\":44,\"lig\":3882,\"rt\":0,\"uid\":\"001BC50C7100001F\"},\"001BC50C71000019\":{\"ts\":1412266891757.6,\"sn\":231,\"lb\"\n" +
+                ":74,\"rt\":0,\"x\":-31,\"btn2\":1412264580802.2,\"btn1\":1412264580964.4,\"uid\":\"001BC50C71000019\",\"tmp\":24,\"z\":40,\"pre\":1023,\"lig\":3772,\"y\":-29,\"hum\":\n" +
+                "35}},\"now\":1412266891949.1}";
+        List<Observation> observations = Observation.fromD7Data(inputData);
+        luceneIndexer.addToIndex(observations);
+        LuceneSearch luceneSearch = new LuceneSearch(index);
+        List<Observation> result = luceneSearch.search("001BC50C71000017");
+        assertTrue(result.size() >= 1);
+
+    }
+
 
 
     private static Observation createObservation(String radioSensorId, String radioGatewayId) {

@@ -146,6 +146,21 @@ public class SynapticsParsingTest {
     }
 
     @Test
+    public void testSensorData5() {
+        String inputData = "{\"ts\":1412266933014.9,\"data\":{\"001BC50C71000017\":{\"ts\":1412264622871.8,\"sn\":0,\"lb\":70,\"lig\":3937,\"rt\":0,\"uid\":\"001BC50C71000017\"},\"001BC50C7100001F\":{\"ts\":1412264781480.6,\"sn\":0,\"lb\":44,\"lig\":3882,\"rt\":0,\"uid\":\"001BC50C7100001F\"},\"001BC50C71000019\":{\"ts\":1412266933010.8,\"sn\":219,\"lb\":74,\"rt\":0,\"x\":-31,\"btn2\":1412264580802.2,\"btn1\":1412264580964.4,\"uid\":\"001BC50C71000019\",\"tmp\":24,\"z\":40,\"pre\":1023,\"lig\":3743,\"y\":-29,\"hum\":35}},\"now\":1412266933275.4}192.168.1.168";
+        List<Observation> res = Observation.fromD7Data(inputData);
+    }
+
+    @Test
+    public void testSensorData6() {
+        String inputData = "{\"ts\":1412266891761.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412264622871.8,\"sn\":0,\"lb\":70,\"lig\":3937,\"rt\":0,\"uid\":\"001BC50C71000017\"},\"001BC50C710\n" +
+                "0001F\":{\"ts\":1412264781480.6,\"sn\":0,\"lb\":44,\"lig\":3882,\"rt\":0,\"uid\":\"001BC50C7100001F\"},\"001BC50C71000019\":{\"ts\":1412266891757.6,\"sn\":231,\"lb\"\n" +
+                ":74,\"rt\":0,\"x\":-31,\"btn2\":1412264580802.2,\"btn1\":1412264580964.4,\"uid\":\"001BC50C71000019\",\"tmp\":24,\"z\":40,\"pre\":1023,\"lig\":3772,\"y\":-29,\"hum\":\n" +
+                "35}},\"now\":1412266891949.1}";
+        List<Observation> res = Observation.fromD7Data(inputData);
+    }
+
+    @Test
     public void testMappingFromLucene() {
         String inputData = "{observation={RadioGatewayId=192.168.1.142, RadioGatewayName=null, RadioGatewayDescription=null, RadioSensorId=001BC50C71000017, RadioSensorName=null, RadioSensorDescription=null, TimestampCreated=1412231999149, TimestampReceived=1412231999149, Measurements={uid=001BC50C71000017, sn=8, ts=1.4122309011679E12, rt=0, lb=91, lig=2676}}}}";
 
