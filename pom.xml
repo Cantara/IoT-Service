@@ -125,7 +125,7 @@
                     <failIfNoTests>false</failIfNoTests>
                     <junitArtifactName>none:none</junitArtifactName>
                     <testNGArtifactName>none:none</testNGArtifactName>
-                    <skipTests>true</skipTests>
+                    <skipTests>false</skipTests>
                 </configuration>
             </plugin>
             <!--

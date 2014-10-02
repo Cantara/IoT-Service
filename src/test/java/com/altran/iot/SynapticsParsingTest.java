@@ -26,8 +26,8 @@ public class SynapticsParsingTest {
         String inputData = "{\"ts\":1412101119002.6,\"data\":{\"001BC50C71000017\":{\"ts\":1412101118998.6,\"sn\":24,\"lb\":77,\"lig\":428,\"rt\":0,\"uid\":\"001BC50C71000017\"}},\"now\":1412101247524.6}192.168.1.142";
         String jsonResult="{\"radioGatewayId\":null,\"radioGatewayName\":null,\"radioGatewayDescription\":null,\"radioSensorId\":null,\"radioSensorName\":\"001BC50C71000017\",\"radioSensorDescription\":null,\"timestampCreated\":\"1.4121011189986E12\",\"timestampReceived\":\"1.4121011190026E12\",\"measurements\":{\"sn\":\"24\",\"rt\":\"0\",\"lb\":\"77\",\"lig\":\"428\"}}";
 
-        Observation observation = Observation.fromD7data(inputData);
-        String r = observation.toString();
+        List<Observation> observations = Observation.fromD7Data(inputData);
+        String r = observations.toString();
 
 
     }
@@ -35,29 +35,25 @@ public class SynapticsParsingTest {
 
     @Test
     public void testCreateObservationFromJson(){
-        String jsonData="{  \n" +
-                "   \"radioGatewayId\":null,\n" +
-                "   \"radioGatewayName\":null,\n" +
-                "   \"radioGatewayDescription\":null,\n" +
-                "   \"radioSensorId\":null,\n" +
-                "   \"radioSensorName\":\"001BC50C71000017\",\n" +
-                "   \"radioSensorDescription\":null,\n" +
-                "   \"timestampCreated\":\"1.4121011189986E12\",\n" +
-                "   \"timestampReceived\":\"1.4121011190026E12\",\n" +
-                "   \"measurements\":{  \n" +
-                "      \"sn\":\"24\",\n" +
-                "      \"rt\":\"0\",\n" +
-                "      \"lb\":\"77\",\n" +
-                "      \"lig\":\"428\"\n" +
-                "   }\n" +
-                "}\n" +
-                "\n";
+        String jsonData = "{\n" +
+                "   \"observation\":{  \n" +
+                "      \"RadioGatewayId\":\"192.168.1.142\",\n" +
+                "      \"RadioGatewayName\":\"null\",\n" +
+                "      \"RadioGatewayDescription\":\"null\",\n" +
+                "      \"RadioSensorId\":\"001BC50C7100001E\",\n" +
+                "      \"RadioSensorName\":\"null\",\n" +
+                "      \"RadioSensorDescription\":\"null\",\n" +
+                "      \"TimestampCreated\":\"1.4122600381924E12\",\n" +
+                "      \"TimestampReceived\":\"1.4122600381924E12\",\n" +
+                "      \"Measurements\":  \n" +
+                "         {\"uid\":\"001BC50C7100001E\",\"sn\":\"80\",\"ts\":\"1.4122600381885E12\",\"pre\":\"1023\",\"rt\":\"0\",\"lb\":\"45\",\"lig\":\"3987\"}                 }\n" +
+                "}";
         Observation o = Observation.fromLucene("","",jsonData);
 
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsonData);
-        Map measurements = JsonPath.read(document, "$.measurements");
-        String timestampReceived = JsonPath.read(document, "$.timestampReceived");
-        String timestampCreated = JsonPath.read(document, "$.timestampCreated");
+        Map measurements = JsonPath.read(document, "$.observation.Measurements");
+        String timestampReceived = JsonPath.read(document, "$.observation.TimestampReceived");
+        String timestampCreated = JsonPath.read(document, "$.observation.TimestampCreated");
 
     }
 
@@ -105,9 +101,9 @@ public class SynapticsParsingTest {
         Map map = (Map) JsonPath.read(document, "$.data");
         Map map2 = (Map) map.get("001BC50C71000017");
         //System.out.println("lig:{}",Double.toString(map2.get("lig")));
-        Observation observation = Observation.fromD7data(inputData);
+        List<Observation> observations = Observation.fromD7Data(inputData);
 
-        System.out.printf("Observation:{}" + observation.toJsonString());
+        System.out.printf("Observation:{}" + observations);
         assert (true);
     }
 
@@ -162,11 +158,23 @@ public class SynapticsParsingTest {
 
     @Test
     public void testMappingFromLucene() {
-        String inputData = "{observation={RadioGatewayId=192.168.1.142, RadioGatewayName=null, RadioGatewayDescription=null, RadioSensorId=001BC50C71000017, RadioSensorName=null, RadioSensorDescription=null, TimestampCreated=1412231999149, TimestampReceived=1412231999149, Measurements={uid=001BC50C71000017, sn=8, ts=1.4122309011679E12, rt=0, lb=91, lig=2676}}}}";
+        String inputData = "{\n" +
+                "   \"observation\":{  \n" +
+                "      \"RadioGatewayId\":\"192.168.1.142\",\n" +
+                "      \"RadioGatewayName\":\"null\",\n" +
+                "      \"RadioGatewayDescription\":\"null\",\n" +
+                "      \"RadioSensorId\":\"001BC50C7100001E\",\n" +
+                "      \"RadioSensorName\":\"null\",\n" +
+                "      \"RadioSensorDescription\":\"null\",\n" +
+                "      \"TimestampCreated\":\"1.4122600283253E12\",\n" +
+                "      \"TimestampReceived\":\"1.4122600283253E12\",\n" +
+                "      \"Measurements\":  \n" +
+                "         {\"uid\":\"001BC50C7100001E\",\"sn\":\"78\",\"ts\":\"1.4122600283213E12\",\"pre\":\"1023\",\"rt\":\"0\",\"lb\":\"45\",\"lig\":\"3987\"}                 }\n" +
+                "}";
 
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
 
-        System.out.println(JsonPath.read(document, "$..TimestampCreated[0]"));
+        System.out.println(JsonPath.read(document, "$.observation.TimestampReceived"));
     }
 
 }

@@ -166,55 +166,6 @@ public class Observation {
     }
 
 
-    public static Observation fromD7data(String inputData) {
-        Observation o = new Observation();
-        try {
-
-            logger.trace("Entry");
-            int startIdx = inputData.indexOf("{");
-            int endIdx = inputData.lastIndexOf(",");
-            String json = inputData.substring(startIdx, endIdx) + "}";
-            o.setRadioGatewayId(inputData.substring(inputData.lastIndexOf("}") + 1));
-            JSONParser jsonParser = new JSONParser();
-            logger.trace("Entry - jsonParser:{}", jsonParser);
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
-            logger.trace("Entry - jsonObject:{}", jsonObject);
-
-
-            JSONObject structure = (JSONObject) jsonObject.get("data");
-            logger.trace("Entry - structure:{}", structure);
-            String sensorID = (String) structure.keySet().toArray()[0];
-            logger.trace("Entry - sensorID:{}", sensorID);
-
-            JSONObject readings = (JSONObject) structure.values().toArray()[0];
-            logger.trace("Entry - readings:{}", readings);
-
-            o.timestampReceived = getString("ts", inputData);
-            logger.trace("Entry - timestampReceived:{}", o.timestampReceived);
-            o.timestampCreated = getString("ts", inputData);
-            logger.trace("Entry - timestampCreated:{}", o.timestampCreated);
-            o.radioSensorId = (String) readings.get("uid");
-            logger.trace("Entry - radioSensorId:{}", o.radioSensorId);
-
-            Map<String, String> measurementsReceived = new HashMap<>();
-            measurementsReceived.put("Serial Number", Long.toString((Long) readings.get("sn")));
-            logger.trace("Entry - Serial Number:{}", Long.toString((Long) readings.get("sn")));
-            measurementsReceived.put("rt", Long.toString((Long) readings.get("rt")));
-            logger.trace("Entry - rt:{}", Long.toString((Long) readings.get("rt")));
-            measurementsReceived.put("Link Budget", Long.toString((Long) readings.get("lb")));
-            logger.trace("Entry - Link Budget:{}", Long.toString((Long) readings.get("lb")));
-            measurementsReceived.put("Light Intensity", Long.toString((Long) readings.get("lig")));
-            logger.trace("Entry - Light Intensity:{}", Long.toString((Long) readings.get("lig")));
-
-
-            o.setMeasurements(measurementsReceived);
-        } catch (ParseException e) {
-            logger.error("Attempting to parse Dash7 datapackage failed. Data: {}", inputData, e);
-            return Observation.fromD7dataTemplate("");
-        }
-        return o;
-    }
-
     private static String getString(String key, String inputData) {
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(inputData);
 
