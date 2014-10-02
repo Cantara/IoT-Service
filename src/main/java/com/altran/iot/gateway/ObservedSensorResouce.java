@@ -32,6 +32,7 @@ public class ObservedSensorResouce {
     private final WriteOperations writeOperations;
     private final ObjectMapper mapper;
     private final LuceneIndexer index;
+    private LuceneSearch luceneSearch;
 
 
     /**
@@ -48,6 +49,7 @@ public class ObservedSensorResouce {
         this.writeOperations = observationsService;
         this.mapper = mapper;
         this.index = index;
+        this.luceneSearch = new LuceneSearch(index.getDirectory());
     }
 
 
@@ -86,7 +88,6 @@ public class ObservedSensorResouce {
         if (query != null) {
             log.trace("registerObservationForSensor body={}", query);
             // observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
-            LuceneSearch luceneSearch = new LuceneSearch(index.getDirectory());
             List<Observation> observations = luceneSearch.search(query);
             String result = buildJsonResult(observations);
             log.info("Search query={} returned {} observations", query, observations.size());

@@ -241,16 +241,16 @@ public class Observation {
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsondata);
 
         if (o.getRadioSensorId() == null || o.getRadioSensorId().length() < 4) {
-            o.setRadioSensorId((String) JsonPath.read(document, "$.radioSensorId"));
+            o.setRadioSensorId((String) JsonPath.read(document, "$.RadioSensorId"));
         }
         if (o.getRadioGatewayId() == null || o.getRadioGatewayId().length() < 4) {
-            o.setRadioGatewayId((String) JsonPath.read(document, "$.radioGatewayId"));
+            o.setRadioGatewayId((String) JsonPath.read(document, "$.RadioGatewayId"));
         }
 
-        o.timestampCreated = JsonPath.read(document, "$.timestampCreated");
-        o.timestampReceived = JsonPath.read(document, "$.timestampReceived");
+        o.timestampCreated = JsonPath.read(document, "$.TimestampCreated");
+        o.timestampReceived = JsonPath.read(document, "$.TimestampReceived");
 
-        o.measurements = JsonPath.read(document, "$.measurements");
+        o.measurements = JsonPath.read(document, "$.Measurements");
         ;
         o.luceneJson = jsondata;
 
