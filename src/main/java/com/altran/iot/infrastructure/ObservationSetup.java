@@ -10,6 +10,13 @@ import java.util.List;
 
 
 public class ObservationSetup {
+    @Override
+    public String toString() {
+        return "ObservationSetup{" +
+                "radiogatewayids=" + radiogatewayids +
+                ", radiosensorids=" + radiosensorids +
+                '}';
+    }
 
     private List<String> radiogatewayids = new LinkedList<>();
     private List<String> radiosensorids = new LinkedList<>();
@@ -19,7 +26,7 @@ public class ObservationSetup {
     }
 
     public void addRadioSensorID(String radiosensorid) {
-        radiogatewayids.add(radiosensorid);
+        radiosensorids.add(radiosensorid);
     }
 
     public List<String> getRadiogatewayids() {
@@ -37,4 +44,6 @@ public class ObservationSetup {
     public void setRadiosensorids(List<String> radiosensorids) {
         this.radiosensorids = radiosensorids;
     }
+
+
 }
