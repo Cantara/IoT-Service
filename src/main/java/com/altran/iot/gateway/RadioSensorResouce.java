@@ -4,13 +4,9 @@ import com.altran.iot.QueryOperations;
 import com.altran.iot.WriteOperations;
 import com.altran.iot.observation.Observation;
 import com.altran.iot.observation.ObservationsService;
-import com.altran.iot.observation.ObservedMethod;
 import com.altran.iot.search.LuceneIndexer;
 import com.altran.iot.search.LuceneSearch;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.LRUMap;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +20,9 @@ import java.util.*;
  * @author <a href="mailto:bard.lind@gmail.com">Bard Lind</a>
  */
 @Component
-@Path("/observedsensor")
-public class ObservedSensorResouce {
-    private static final Logger log = LoggerFactory.getLogger(ObservedSensorResouce.class);
+@Path("/radiosensor")
+public class RadioSensorResouce {
+    private static final Logger log = LoggerFactory.getLogger(RadioSensorResouce.class);
 
     private final QueryOperations queryOperations;
     private final WriteOperations writeOperations;
@@ -44,7 +40,7 @@ public class ObservedSensorResouce {
     }
      **/
     @Autowired
-    public ObservedSensorResouce(ObservationsService observationsService, ObjectMapper mapper, LuceneIndexer index) {
+    public RadioSensorResouce(ObservationsService observationsService, ObjectMapper mapper, LuceneIndexer index) {
         this.queryOperations = observationsService;
         this.writeOperations = observationsService;
         this.mapper = mapper;
