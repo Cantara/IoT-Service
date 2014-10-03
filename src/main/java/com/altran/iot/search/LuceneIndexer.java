@@ -98,6 +98,7 @@ public class LuceneIndexer {
 
     public void addToIndex(List<Observation> observations) throws IOException {
         logger.trace("addToIndex entry - observations:" + observations);
+        IndexWriter iWriter = getWriter();
         for (Observation observation : observations) {
             String uniquenessKey = observation.getTimestampCreated() + observation.getRadioGatewayId() + observation.getRadioSensorId();
             if (timestamps.get(uniquenessKey) == null) {
@@ -105,15 +106,14 @@ public class LuceneIndexer {
                 timestamps.put(uniquenessKey, new String("timestamp"));
                 Document doc = createLuceneDocument(observation);
 
-                IndexWriter iWriter = getWriter();
 
                 iWriter.addDocument(doc);
-                iWriter.optimize();
-                iWriter.commit();
             } else {
                 logger.info("registerObservationForSensor - dropped - Received duplicate data. {}", observation);
             }
         }
+        iWriter.optimize();
+        iWriter.commit();
 
 
     }
