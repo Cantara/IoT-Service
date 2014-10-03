@@ -1,7 +1,9 @@
 package com.altran.iot.infrastructure;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,30 +20,34 @@ public class ObservationSetup {
                 '}';
     }
 
-    private List<String> radiogatewayids = new LinkedList<>();
-    private List<String> radiosensorids = new LinkedList<>();
+    private Map<String, String> radiogatewayids = new HashMap();
+    private Map<String, String> radiosensorids = new HashMap<>();
 
     public void addRadioGatewayID(String radiogatewayid) {
-        radiogatewayids.add(radiogatewayid);
+        if (radiogatewayids.get(radiogatewayid) == null) {
+            radiogatewayids.put(radiogatewayid, radiogatewayid);
+        }
     }
 
     public void addRadioSensorID(String radiosensorid) {
-        radiosensorids.add(radiosensorid);
+        if (radiosensorids.get(radiosensorid) == null) {
+            radiosensorids.put(radiosensorid, radiosensorid);
+        }
     }
 
-    public List<String> getRadiogatewayids() {
+    public Map<String, String> getRadiogatewayids() {
         return radiogatewayids;
     }
 
-    public void setRadiogatewayids(List<String> radiogatewayids) {
+    public void setRadiogatewayids(Map<String, String> radiogatewayids) {
         this.radiogatewayids = radiogatewayids;
     }
 
-    public List<String> getRadiosensorids() {
+    public Map<String, String> getRadiosensorids() {
         return radiosensorids;
     }
 
-    public void setRadiosensorids(List<String> radiosensorids) {
+    public void setRadiosensorids(Map<String, String> radiosensorids) {
         this.radiosensorids = radiosensorids;
     }
 
