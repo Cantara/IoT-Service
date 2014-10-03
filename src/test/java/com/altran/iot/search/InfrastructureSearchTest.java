@@ -47,8 +47,8 @@ public class InfrastructureSearchTest extends TestCase {
         assertTrue(result.size() >= 1);
         ObservationSetup os = luceneSearch.getInfrastructure();
         System.out.println(os);
-        assertTrue(os.getRadiogatewayids().size() > 1);
-        assertTrue(os.getRadiosensorids().size() > 1);
+        assertTrue(os.getRadiogatewayids().size() > 2);
+        assertTrue(os.getRadiosensorids().size() > 4);
 
     }
 
