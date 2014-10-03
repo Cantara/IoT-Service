@@ -33,6 +33,8 @@ public class RadioGatewaysResourceTest {
     @Test
     public void testListGateways() throws Exception {
         index = new RAMDirectory();
+        luceneIndexer = new LuceneIndexer(index);
+        insertData(luceneIndexer);
         luceneSearch = new LuceneSearch(index);
         ObservationSetup observationSetup = luceneSearch.getInfrastructure();
         Set<String> expectedRadioGateways = new TreeSet<>();
@@ -50,7 +52,7 @@ public class RadioGatewaysResourceTest {
 
     }
 
-    private void insertData() throws IOException {
+    private void insertData(LuceneIndexer luceneIndexer) throws IOException {
 
         String inputData = "{\"ts\":1412231999149,\"data\":{\"001BC50C71100017\":{\"ts\":1412230901167.9,\"sn\":8,\"lb" +
                 "\":91,\"lig\":2676,\"rt\":0,\"uid\":\"001BC50C71000017\"},\"001BC50C71000019\":{\"uid\":\"001" +
