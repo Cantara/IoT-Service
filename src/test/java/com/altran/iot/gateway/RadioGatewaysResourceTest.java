@@ -4,7 +4,6 @@ import com.altran.iot.infrastructure.ObservationSetup;
 import com.altran.iot.observation.Observation;
 import com.altran.iot.search.LuceneIndexer;
 import com.altran.iot.search.LuceneSearch;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.junit.Before;
@@ -15,22 +14,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static org.junit.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 public class RadioGatewaysResourceTest {
 
     LuceneIndexer luceneIndexer = null;
     Directory index = null;
-    RadioGatewaysResource resource = null;
     LuceneSearch luceneSearch = null;
+
     @Before
     public void setUp() throws Exception {
-        index = new RAMDirectory();
-        luceneIndexer = new LuceneIndexer(index);
-        insertData();
-        ObjectMapper mapper = new ObjectMapper();
-        luceneSearch = new LuceneSearch(index);
-        resource = new RadioGatewaysResource(mapper,luceneIndexer);
+
 
     }
 
@@ -38,6 +32,8 @@ public class RadioGatewaysResourceTest {
 
     @Test
     public void testListGateways() throws Exception {
+        index = new RAMDirectory();
+        luceneSearch = new LuceneSearch(index);
         ObservationSetup observationSetup = luceneSearch.getInfrastructure();
         Set<String> expectedRadioGateways = new TreeSet<>();
         expectedRadioGateways.add("92.68.1.142");
