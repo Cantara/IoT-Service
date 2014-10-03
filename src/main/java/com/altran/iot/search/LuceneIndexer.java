@@ -67,7 +67,7 @@ public class LuceneIndexer {
             IndexWriter w = getWriter();
             w.deleteDocuments(new Term(FIELD_TIMESTAMP, timestamp));
             w.optimize();
-            w.close();
+            w.commit();
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -78,7 +78,7 @@ public class LuceneIndexer {
             IndexWriter w = getWriter();
             w.updateDocument(new Term(FIELD_TIMESTAMP, observation.getTimestampCreated()), createLuceneDocument(observation));
             w.optimize();
-            w.close();
+            w.commit();
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -90,7 +90,7 @@ public class LuceneIndexer {
             IndexWriter writer = getWriter();
             addToIndex(writer, observation);
             writer.optimize();
-            writer.close();
+            writer.commit();
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
