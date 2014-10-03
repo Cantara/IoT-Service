@@ -23,6 +23,17 @@ public class ObservationSetup {
     private Map<String, String> radiogatewayids = new HashMap();
     private Map<String, String> radiosensorids = new HashMap<>();
 
+    public int getNumOfMeasurements() {
+        return numOfMeasurements;
+    }
+
+    public void setNumOfMeasurements(int numOfMeasurements) {
+        this.numOfMeasurements = numOfMeasurements;
+    }
+
+    private int numOfMeasurements;
+
+
     public void addRadioGatewayID(String radiogatewayid) {
         if (radiogatewayids.get(radiogatewayid) == null) {
             radiogatewayids.put(radiogatewayid, radiogatewayid);

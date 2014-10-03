@@ -65,6 +65,7 @@ public class LuceneSearch {
         IndexSearcher searcher = null;
         try {
             searcher = new IndexSearcher(index, true);
+            result.setNumOfMeasurements(searcher.getIndexReader().numDocs());
             TopDocs topDocs = searcher.search(q, MAX_INFRASTRUCTURE_HITS);
 
             for (ScoreDoc hit : topDocs.scoreDocs) {

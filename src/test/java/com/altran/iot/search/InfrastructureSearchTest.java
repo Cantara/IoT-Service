@@ -49,6 +49,7 @@ public class InfrastructureSearchTest extends TestCase {
         System.out.println(os);
         assertTrue(os.getRadiogatewayids().size() > 2);
         assertTrue(os.getRadiosensorids().size() > 4);
+        System.out.println("Number of documents in index: " + os.getNumOfMeasurements());
 
     }
 
