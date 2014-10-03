@@ -1,5 +1,6 @@
 package com.altran.iot.search;
 
+import com.altran.iot.infrastructure.ObservationSetup;
 import com.altran.iot.observation.Observation;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -24,6 +25,8 @@ public class LuceneSearch {
     private static final Logger logger = LoggerFactory.getLogger(LuceneSearch.class);
     private static final Analyzer ANALYZER = new StandardAnalyzer(Version.LUCENE_31);
     private static final int MAX_HITS = 200;
+    private static final int MAX_INFRASTRUCTURE_HITS = 2000;
+
     private final Directory index;
 
     public Directory getDirectory() {
@@ -32,6 +35,57 @@ public class LuceneSearch {
 
     public LuceneSearch(Directory index) {
         this.index = index;
+    }
+
+    public ObservationSetup getInfrastructure() {
+        String queryString = "lb";
+
+        String wildCardQuery = buildWildCardQuery(queryString);
+        String[] fields = {
+                LuceneIndexer.FIELD_TIMESTAMP,
+                LuceneIndexer.FIELD_RADIOGATEWAY,
+                LuceneIndexer.FIELD_RADIOSENSOR,
+                LuceneIndexer.FIELD_MEASUREMENTS
+        };
+        HashMap<String, Float> boosts = new HashMap<>();
+        boosts.put(LuceneIndexer.FIELD_RADIOGATEWAY, 1.5f);
+        boosts.put(LuceneIndexer.FIELD_RADIOSENSOR, 3f);
+        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(Version.LUCENE_30, fields, ANALYZER, boosts);
+        multiFieldQueryParser.setAllowLeadingWildcard(true);
+        Query q;
+        try {
+            q = multiFieldQueryParser.parse(wildCardQuery);
+            logger.info("getInfrastructure - search q={}", q);
+        } catch (ParseException e) {
+            logger.error("getInfrastructure - Could not parse wildCardQuery={}. Returning empty search result.", wildCardQuery, e);
+            return new ObservationSetup();
+        }
+
+        ObservationSetup result = new ObservationSetup();
+        IndexSearcher searcher = null;
+        try {
+            searcher = new IndexSearcher(index, true);
+            TopDocs topDocs = searcher.search(q, MAX_INFRASTRUCTURE_HITS);
+
+            for (ScoreDoc hit : topDocs.scoreDocs) {
+                int docId = hit.doc;
+                Document d = searcher.doc(docId);
+                logger.trace("getInfrastructure - added observation to result: " + d);
+                result.addRadioGatewayID(d.get(LuceneIndexer.FIELD_RADIOGATEWAY));
+                result.addRadioSensorID(d.get(LuceneIndexer.FIELD_RADIOSENSOR));
+            }
+        } catch (IOException e) {
+            logger.error("getInfrastructure - Error when searching.", e);
+        } finally {
+            if (searcher != null) {
+                try {
+                    searcher.close();
+                } catch (IOException e) {
+                    logger.info("getInfrastructure - searcher.close() failed. Ignore. {}", e.getMessage());
+                }
+            }
+        }
+        return result;
     }
 
     public List<Observation> search(String queryString) {
