@@ -51,7 +51,7 @@ public class RadioSensorResouce {
 
 
 
-    //http://localhost:80/iot/observe/observedsensor
+    //http://localhost:80/iot/observe/radio
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerObservationForSensor(@Context UriInfo ui, String prefix) {

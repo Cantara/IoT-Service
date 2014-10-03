@@ -1,8 +1,6 @@
 package com.altran.iot.infrastructure;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -12,16 +10,8 @@ import java.util.Map;
 
 
 public class ObservationSetup {
-    @Override
-    public String toString() {
-        return "ObservationSetup{" +
-                "radiogatewayids=" + radiogatewayids +
-                ", radiosensorids=" + radiosensorids +
-                '}';
-    }
-
-    private Map<String, String> radiogatewayids = new HashMap();
-    private Map<String, String> radiosensorids = new HashMap<>();
+    private Map<String, String> radioGatewayIds = new HashMap();
+    private Map<String, String> radioSensorIds = new HashMap<>();
 
     public int getNumOfMeasurements() {
         return numOfMeasurements;
@@ -35,31 +25,39 @@ public class ObservationSetup {
 
 
     public void addRadioGatewayID(String radiogatewayid) {
-        if (radiogatewayids.get(radiogatewayid) == null) {
-            radiogatewayids.put(radiogatewayid, radiogatewayid);
+        if (radioGatewayIds.get(radiogatewayid) == null) {
+            radioGatewayIds.put(radiogatewayid, radiogatewayid);
         }
     }
 
     public void addRadioSensorID(String radiosensorid) {
-        if (radiosensorids.get(radiosensorid) == null) {
-            radiosensorids.put(radiosensorid, radiosensorid);
+        if (radioSensorIds.get(radiosensorid) == null) {
+            radioSensorIds.put(radiosensorid, radiosensorid);
         }
     }
 
-    public Map<String, String> getRadiogatewayids() {
-        return radiogatewayids;
+    public Map<String, String> getRadioGatewayIds() {
+        return radioGatewayIds;
     }
 
-    public void setRadiogatewayids(Map<String, String> radiogatewayids) {
-        this.radiogatewayids = radiogatewayids;
+    public void setRadioGatewayIds(Map<String, String> radioGatewayIds) {
+        this.radioGatewayIds = radioGatewayIds;
     }
 
-    public Map<String, String> getRadiosensorids() {
-        return radiosensorids;
+    public Map<String, String> getRadioSensorIds() {
+        return radioSensorIds;
     }
 
-    public void setRadiosensorids(Map<String, String> radiosensorids) {
-        this.radiosensorids = radiosensorids;
+    public void setRadioSensorIds(Map<String, String> radioSensorIds) {
+        this.radioSensorIds = radioSensorIds;
+    }
+
+    @Override
+    public String toString() {
+        return "ObservationSetup{" +
+                "radiogatewayids=" + radioGatewayIds +
+                ", radiosensorids=" + radioSensorIds +
+                '}';
     }
 
 
