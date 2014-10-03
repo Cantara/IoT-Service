@@ -41,14 +41,14 @@ public class RadioGatewaysResourceTest {
         expectedRadioGateways.add("92.68.1.142");
         expectedRadioGateways.add("182.168.1.142");
         expectedRadioGateways.add("192.168.1.142");
-        assertEquals(observationSetup.getRadioGatewayIds().keySet(), expectedRadioGateways);
+        assertEquals(expectedRadioGateways, observationSetup.getRadioGatewayIds().keySet());
         Set<String> expectedRadioSensors = new TreeSet<>();
         expectedRadioSensors.add("001BC50C71000019");
         expectedRadioSensors.add("001BC50C71030017");
         expectedRadioSensors.add("001BC50C7100001b");
         expectedRadioSensors.add("001BC50C71100017");
         expectedRadioSensors.add("001BCA0C7100001a");
-        assertEquals(observationSetup.getRadioSensorIds().keySet(), expectedRadioSensors);
+        assertEquals(expectedRadioSensors, observationSetup.getRadioSensorIds().keySet());
 
     }
 
