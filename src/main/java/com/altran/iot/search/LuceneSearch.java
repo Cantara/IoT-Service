@@ -7,10 +7,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
@@ -115,7 +112,9 @@ public class LuceneSearch {
         IndexSearcher searcher = null;
         try {
             searcher = new IndexSearcher(index, true);
-            TopDocs topDocs = searcher.search(q, MAX_HITS);
+            SortField sortField = new SortField(LuceneIndexer.FIELD_TIMESTAMP, SortField.STRING, true);  // Descending sort
+            Sort sort = new Sort(sortField);
+            TopFieldDocs topDocs = searcher.search(q, MAX_HITS, sort);
 
             for (ScoreDoc hit : topDocs.scoreDocs) {
                 int docId = hit.doc;
