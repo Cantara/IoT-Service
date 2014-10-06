@@ -247,9 +247,14 @@ public class Observation {
      * @return
      */
     public static String getStringDate(Object timestampstring) {
-        Double d1 = Double.parseDouble(timestampstring.toString()) / 1000;
-        Date date = new Date((long) d1.intValue() * 1000L);
-        return dateParser.format(date);
+        try {
+            Double d1 = Double.parseDouble(timestampstring.toString()) / 1000;
+            Date date = new Date((long) d1.intValue() * 1000L);
+            return dateParser.format(date);
+        } catch (NumberFormatException ne) {
+            // Already converted
+            return timestampstring.toString();
+        }
     }
 
 }
