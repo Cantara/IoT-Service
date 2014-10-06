@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 public class InfrastructureService {
     private static final Logger log = LoggerFactory.getLogger(InfrastructureService.class);
 
-    @Autowired
-    public InfrastructureService() {
-    }
+    private final InfrastructureRepository repository;
 
+    @Autowired
+    public InfrastructureService(InfrastructureRepository repository) {
+        this.repository = repository;
+    }
 
 
     public void updateSensorInfrastructure(Observation observation) {
