@@ -156,6 +156,12 @@ public class Observation {
                 if ("ts".equalsIgnoreCase(sensortype.toString())) {
                     o.timestampCreated = getStringDate(sensorvalues.get(sensortype).toString());
                     measurementsReceived.put(sensortype.toString(), getStringDate(sensorvalues.get(sensortype).toString()));
+                } else if ("btn1".equalsIgnoreCase(sensortype.toString())) {
+                    measurementsReceived.put(sensortype.toString(), getStringDate(sensorvalues.get(sensortype).toString()));
+
+                } else if ("btn2".equalsIgnoreCase(sensortype.toString())) {
+                    measurementsReceived.put(sensortype.toString(), getStringDate(sensorvalues.get(sensortype).toString()));
+
                 } else {
                     measurementsReceived.put(sensortype.toString(), sensorvalues.get(sensortype).toString());
                 }
