@@ -29,7 +29,7 @@ public class ObservationSetup {
         if (count == null) {
             radioGatewayIds.put(radiogatewayid, "1");
         } else {
-            radioGatewayIds.put(radiogatewayid, Integer.toString(Integer.getInteger(count) + 1));
+            radioGatewayIds.put(radiogatewayid, Integer.toString(Integer.parseInt(count) + 1));
         }
     }
 
@@ -38,7 +38,7 @@ public class ObservationSetup {
         if (count == null) {
             radioSensorIds.put(radiosensorid, "1");
         } else {
-            radioSensorIds.put(radiosensorid, Integer.toString(Integer.getInteger(count) + 1));
+            radioSensorIds.put(radiosensorid, Integer.toString(Integer.parseInt(count) + 1));
         }
     }
 
