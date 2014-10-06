@@ -155,7 +155,7 @@ public class Observation {
                 logger.trace("SensorType =" + sensortype);
                 logger.trace("  SensorReading =" + sensorvalues.get(sensortype));
                 if ("ts".equalsIgnoreCase(sensortype.toString())) {
-                    o.timestampCreated = sensorvalues.get(sensortype).toString()
+                    o.timestampCreated = sensorvalues.get(sensortype).toString();
                 }
                 measurementsReceived.put(sensortype.toString(), sensorvalues.get(sensortype).toString());
             }
