@@ -25,14 +25,20 @@ public class ObservationSetup {
 
 
     public void addRadioGatewayID(String radiogatewayid) {
-        if (radioGatewayIds.get(radiogatewayid) == null) {
-            radioGatewayIds.put(radiogatewayid, radiogatewayid);
+        String count = radioGatewayIds.get(radiogatewayid);
+        if (count == null) {
+            radioGatewayIds.put(radiogatewayid, "1");
+        } else {
+            radioGatewayIds.put(radiogatewayid, Integer.toString(Integer.getInteger(count) + 1));
         }
     }
 
     public void addRadioSensorID(String radiosensorid) {
-        if (radioSensorIds.get(radiosensorid) == null) {
-            radioSensorIds.put(radiosensorid, radiosensorid);
+        String count = radioSensorIds.get(radiosensorid);
+        if (count == null) {
+            radioSensorIds.put(radiosensorid, "1");
+        } else {
+            radioSensorIds.put(radiosensorid, Integer.toString(Integer.getInteger(count) + 1));
         }
     }
 
