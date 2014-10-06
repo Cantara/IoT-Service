@@ -85,7 +85,6 @@ public class RadioSensorResouce {
 
     @GET
     @Path("/tail")
-
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLatest() {
         // final long observedMethods;

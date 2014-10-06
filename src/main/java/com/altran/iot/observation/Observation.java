@@ -9,10 +9,8 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Observation {
 
@@ -25,6 +23,7 @@ public class Observation {
     private String timestampCreated;
     private String timestampReceived;
     private Map<String, String> measurements;
+    private static SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     private String luceneJson;
 
@@ -140,9 +139,9 @@ public class Observation {
         for (Object key : observations.keySet()) {
             logger.trace("\n\nRadioSensor = " + key);
             Observation o = new Observation();
-            o.timestampReceived = getString("ts", inputData);
+            o.timestampReceived = getStringDate(getString("ts", inputData));
             logger.trace("Entry - timestampReceived:{}", o.timestampReceived);
-            o.timestampCreated = getString("ts", inputData);
+            o.timestampCreated = getStringDate(getString("ts", inputData));
             logger.trace("Entry - timestampCreated:{}", o.timestampCreated);
             o.radioSensorId = key.toString();
             logger.trace("Entry - radioSensorId:{}", o.radioSensorId);
@@ -155,7 +154,7 @@ public class Observation {
                 logger.trace("SensorType =" + sensortype);
                 logger.trace("  SensorReading =" + sensorvalues.get(sensortype));
                 if ("ts".equalsIgnoreCase(sensortype.toString())) {
-                    o.timestampCreated = sensorvalues.get(sensortype).toString();
+                    o.timestampCreated = getStringDate(sensorvalues.get(sensortype).toString());
                 }
                 measurementsReceived.put(sensortype.toString(), sensorvalues.get(sensortype).toString());
             }
@@ -197,8 +196,7 @@ public class Observation {
         if (o.getRadioGatewayId() == null || o.getRadioGatewayId().length() < 4) {
             o.setRadioGatewayId((String) JsonPath.read(document, "$.observation.RadioGatewayId"));
         }
-        o.timestampCreated = JsonPath.read(document, "$.observation.TimestampCreated");
-        o.timestampReceived = JsonPath.read(document, "$.observation.TimestampReceived");
+        o.timestampReceived = getStringDate(JsonPath.read(document, "$.observation.TimestampReceived"));
 
         o.measurements = JsonPath.read(document, "$.observation.Measurements");
 
@@ -241,6 +239,18 @@ public class Observation {
                 "}";
     }
 
+
+    /**
+     * could probably be written more elegant...
+     *
+     * @param timestampstring
+     * @return
+     */
+    public static String getStringDate(Object timestampstring) {
+        Double d1 = Double.parseDouble(timestampstring.toString()) / 1000;
+        Date date = new Date((long) d1.intValue() * 1000L);
+        return dateParser.format(date);
+    }
 
 }
 

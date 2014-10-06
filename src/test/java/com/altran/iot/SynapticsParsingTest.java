@@ -9,6 +9,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Test;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -184,6 +186,17 @@ public class SynapticsParsingTest {
         System.out.println(JsonPath.read(document, "$.observation.TimestampReceived"));
     }
 
+    @Test
+    public void dateTesing() throws Exception {
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        System.out.println(dateParser.parse("2014-10-06 18:00").getTime());
+        System.out.println(Double.parseDouble("1.4122646228718E12") / 1000);
+        Double d1 = Double.parseDouble("1.4122646228718E12") / 1000;
+        System.out.println(d1.intValue());
+
+        Date date = new Date((long) d1.intValue() * 1000L);
+        System.out.println(dateParser.format(date));
+    }
 }
 
 
