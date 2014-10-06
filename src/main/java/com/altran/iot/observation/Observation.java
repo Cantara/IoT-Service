@@ -152,8 +152,11 @@ public class Observation {
             Map sensorvalues = (Map) observations.get(key);
             Map<String, String> measurementsReceived = new HashMap<>();
             for (Object sensortype : sensorvalues.keySet()) {
-                logger.trace("Sensortype =" + sensortype);
-                logger.trace("  Sensorreading =" + sensorvalues.get(sensortype));
+                logger.trace("SensorType =" + sensortype);
+                logger.trace("  SensorReading =" + sensorvalues.get(sensortype));
+                if ("ts".equalsIgnoreCase(sensortype.toString())) {
+                    o.timestampCreated = sensorvalues.get(sensortype).toString()
+                }
                 measurementsReceived.put(sensortype.toString(), sensorvalues.get(sensortype).toString());
             }
             o.setMeasurements(measurementsReceived);
