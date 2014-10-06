@@ -13,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.util.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 /**
  * @author <a href="mailto:bard.lind@gmail.com">Bard Lind</a>
@@ -32,13 +35,12 @@ public class RadioSensorResouce {
 
 
     /**
-    @Autowired
-    public ObservedMethodsResouce(QueryOperations queryOperations, WriteOperations writeOperations, ObjectMapper mapper) {
-        this.queryOperations = queryOperations;
-        this.writeOperations = writeOperations;
-        this.mapper = mapper;
-    }
-     **/
+     * @Autowired public ObservedMethodsResouce(QueryOperations queryOperations, WriteOperations writeOperations, ObjectMapper mapper) {
+     * this.queryOperations = queryOperations;
+     * this.writeOperations = writeOperations;
+     * this.mapper = mapper;
+     * }
+     */
     @Autowired
     public RadioSensorResouce(ObservationsService observationsService, ObjectMapper mapper, LuceneIndexer index) {
         this.queryOperations = observationsService;
@@ -47,8 +49,6 @@ public class RadioSensorResouce {
         this.index = index;
         this.luceneSearch = new LuceneSearch(index.getDirectory());
     }
-
-
 
 
     //http://localhost:80/iot/observe/radio
@@ -76,11 +76,28 @@ public class RadioSensorResouce {
             } else {
                 log.error("You must supply some body content.");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new UnsupportedOperationException("You must supply Dash7 gw body content.  body=" + prefix + "\n", e);
         }
 
         return Response.ok("ok").build();
+    }
+
+    @GET
+    @Path("/tail")
+
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLatest() {
+        // final long observedMethods;
+
+        String query = "1";
+        log.trace("registerObservationForSensor body={}", query);
+        // observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
+        List<Observation> observations = luceneSearch.search(query);
+        String result = buildJsonResult(observations);
+        log.info("Search query={} returned {} observations", query, observations.size());
+        return Response.ok(result).build();
+
     }
 
     @GET
