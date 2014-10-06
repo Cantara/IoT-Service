@@ -199,6 +199,7 @@ public class Observation {
             o.setRadioGatewayId((String) JsonPath.read(document, "$.observation.RadioGatewayId"));
         }
         o.timestampReceived = getStringDate(JsonPath.read(document, "$.observation.TimestampReceived"));
+        o.timestampCreated = getStringDate(JsonPath.read(document, "$.observation.TimestampCreated"));
 
         o.measurements = JsonPath.read(document, "$.observation.Measurements");
 
