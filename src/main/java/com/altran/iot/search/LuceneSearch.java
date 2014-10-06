@@ -112,7 +112,7 @@ public class LuceneSearch {
         IndexSearcher searcher = null;
         try {
             searcher = new IndexSearcher(index, true);
-            SortField sortField = new SortField(LuceneIndexer.FIELD_TIMESTAMP, SortField.STRING, true);  // Descending sort
+            SortField sortField = new SortField(LuceneIndexer.FIELD_TIMESTAMP, SortField.STRING, true);  // Descending sort og timestamp
             Sort sort = new Sort(sortField);
             TopFieldDocs topDocs = searcher.search(q, MAX_HITS, sort);
 
