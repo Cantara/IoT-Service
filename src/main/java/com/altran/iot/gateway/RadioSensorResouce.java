@@ -121,7 +121,7 @@ public class RadioSensorResouce {
 
     private String buildJsonResult(List<Observation> observations) {
         StringBuffer resultJSON = new StringBuffer();
-        resultJSON.append("{  \n" + "   \"observations\":[");
+        resultJSON.append("{  {\"Returned:\":\"" + observations.size() + "\"}\n" + "   \"observations\":[");
         for (int i = 0; i < observations.size(); i++) {
 
             resultJSON.append(observations.get(i).toJsonString());
