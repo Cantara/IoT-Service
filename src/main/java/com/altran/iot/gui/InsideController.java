@@ -58,7 +58,7 @@ public class InsideController {
             model.put(PATIENT_3, namepatient3 + " <font color=\"red\">Outside - (A: 50, B: 40, C:?)  - " + patient3 + "</font>");
             model.put(PATIENT_4, namepatient4 + " Inside - (A: 50, B: 36, C:65)  - " + patient4);
         }
-        model.put(PATIENT_5, namepatient5 + " <font color=\"red\">Outside - (A: ?, B: ?, C:?)  - " + patient5 + "</font> ");
+        model.put(PATIENT_5, namepatient5 + " <font color=\"yellow\">Offline - (A: ?, B: ?, C:?)  - " + patient5 + "</font> ");
 
         model.put(CORNER_1, "A: 50, B: 30, C:45");
         model.put(CORNER_2, "A: 50, B: 80, C:45");
