@@ -77,7 +77,7 @@ public class RadioSensorResouce {
                 log.error("You must supply some body content.");
             }
         } catch (Exception e) {
-            throw new UnsupportedOperationException("You must supply Dash7 gw body content.  body=" + d7data + "\n", e);
+            throw new UnsupportedOperationException("You must supply Dash7 gw body content.  body=" + d7data + "\n");
         }
 
         return Response.ok("ok").build();
