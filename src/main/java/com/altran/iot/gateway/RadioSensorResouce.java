@@ -89,7 +89,7 @@ public class RadioSensorResouce {
     public Response getLatest() {
         // final long observedMethods;
 
-        String query = "1";
+        String query = "ts";
         log.trace("registerObservationForSensor body={}", query);
         // observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
         List<Observation> observations = luceneSearch.search(query);
