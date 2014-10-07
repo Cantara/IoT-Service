@@ -145,7 +145,12 @@ public class Observation {
             logger.trace("Entry - timestampCreated:{}", o.timestampCreated);
             o.radioSensorId = key.toString();
             logger.trace("Entry - radioSensorId:{}", o.radioSensorId);
-            o.setRadioGatewayId(inputData.substring(inputData.lastIndexOf("}") + 1));
+            String gatewayIp = inputData.substring(inputData.lastIndexOf("}") + 1);
+            if (gatewayIp.length() > 15) {
+                // handle double IPaddress
+                gatewayIp = gatewayIp.substring(0, gatewayIp.length() + 1 % 2);
+            }
+            o.setRadioGatewayId(gatewayIp);
 
             // System.out.println("Sensorvalues = " + observations.get(key));
             Map sensorvalues = (Map) observations.get(key);
