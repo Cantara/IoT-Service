@@ -1,0 +1,56 @@
+package com.altran.iot.gui;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+
+@Controller
+public class InsideController {
+
+    public static final String HEADING = "message";
+
+    public static final String PATIENT_1 = "patient1";
+    public static final String PATIENT_2 = "patient2";
+    public static final String PATIENT_3 = "patient3";
+    public static final String PATIENT_4 = "patient4";
+    public static final String PATIENT_5 = "patient5";
+
+    public static final String CORNER_1 = "corner1";
+    public static final String CORNER_2 = "corner2";
+    public static final String CORNER_3 = "corner3";
+    public static final String CORNER_4 = "corner4";
+
+    Random randomGenerator = new Random();
+
+
+    @RequestMapping("/dement")
+    public ModelAndView test() {
+        Map model = new HashMap<String, String>();
+        model.put(HEADING, "Pasientovervåkning - demente");
+        model.put(PATIENT_1, "Inside - A: 50, B: 30, C:45");
+        model.put(PATIENT_2, "Inside - A: 50, B: 40, C:45");
+
+        if (randomGenerator.nextInt(100) > 50) {
+            model.put(PATIENT_3, "Inside - A: 50, B: 36, C:65");
+            model.put(PATIENT_4, "<font color=\"red\">Outside - A: 50, B: 30, C:13</font>");
+        } else {
+            model.put(PATIENT_3, "<font color=\"red\">Outside - A: 50, B: 30, C:13</font>");
+            model.put(PATIENT_4, "Inside - A: 50, B: 36, C:65");
+        }
+        model.put(PATIENT_5, "<font color=\"red\">Outside - A: 20, B: 30, C:45</font> ");
+
+        model.put(CORNER_1, "A: 50, B: 30, C:45");
+        model.put(CORNER_2, "A: 50, B: 80, C:45");
+        model.put(CORNER_3, "A: 40, B: 30, C:15");
+        model.put(CORNER_4, "A: 40, B: 80, C:15");
+
+
+        String message = "Pasientovervåkning - demente";
+        return new ModelAndView("dement", "model", model);
+    }
+}
