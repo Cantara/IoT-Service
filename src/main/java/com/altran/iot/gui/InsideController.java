@@ -54,9 +54,12 @@ public class InsideController {
         if (randomGenerator.nextInt(100) > 30) {
             model.put(PATIENT_3, namepatient3 + " Inside - (A: 50, B: 36, C:65)  - " + patient3);
             model.put(PATIENT_4, namepatient4 + " <font color=\"red\">Outside - (A: 50, B: 30, C:13)  - " + patient4 + "</font>");
-        } else {
+        } else if (randomGenerator.nextInt(100) > 40) {
             model.put(PATIENT_3, namepatient3 + " <font color=\"red\">Outside - (A: 50, B: 40, C:?)  - " + patient3 + "</font>");
             model.put(PATIENT_4, namepatient4 + " Inside - (A: 50, B: 36, C:65)  - " + patient4);
+        } else {
+            model.put(PATIENT_3, namepatient3 + " <font color=\"red\">Outside - (A: 50, B: 40, C:?)  - " + patient3 + "</font>");
+            model.put(PATIENT_4, namepatient4 + " <font color=\"red\">Outside - (A: 50, B: 30, C:13)  - " + patient4 + "</font>");
         }
         model.put(PATIENT_5, namepatient5 + " <font color=\"yellow\">Offline - (A: ?, B: ?, C:?)  - " + patient5 + "</font> ");
 
