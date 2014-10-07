@@ -3,7 +3,7 @@
 
     <groupId>com.altran.iot</groupId>
     <artifactId>IoT-service</artifactId>
-    <version>0.8.26</version>
+    <version>0.8.27-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>IoT-service</name>
@@ -43,7 +43,7 @@
         <developerConnection>scm:git:ssh://git@github.com/altran/iot-service.git</developerConnection>
         <connection>scm:git:https://github.com/altran/iot-service.git</connection>
         <url>https://github.com/altran/iot-service</url>
-        <tag>IoT-service-0.8.26</tag>
+        <tag>IoT-service-0.8.22</tag>
     </scm>
 
     <repositories>
