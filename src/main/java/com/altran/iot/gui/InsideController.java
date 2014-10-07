@@ -14,10 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 
 @Controller
@@ -146,7 +143,7 @@ public class InsideController {
         try {
             List<Observation> observations = luceneSearch.search(patient);
             Observation o = observations.get(0);
-            valuePatient1 = "(" + o.getMeasurements().get("lb") + ", B: 30, C:45)";
+            valuePatient1 = "(A:" + o.getMeasurements().get("lb") + ", B: 30, C:45)";
 
         } catch (Exception e) {
             valuePatient1 = "(A: ?, B: ?, C:?) ";
@@ -161,8 +158,21 @@ public class InsideController {
         return true;
     }
 
-    private boolean isLost(String position) {
-        if (position.indexOf("?") > 0) {
+    public static boolean isLost(String position) {
+        try {
+            String delims = ",";
+            StringTokenizer st = new StringTokenizer(position, delims);
+            while (st.hasMoreElements()) {
+                String value = st.nextElement().toString();
+                value = value.replaceAll("[^\\d.]", "");
+                Integer i = Integer.parseInt(value);
+                if (i < 60) {
+                    return true;
+
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error trying to calculate if patient is lost");
             return true;
         }
         return false;
