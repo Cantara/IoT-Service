@@ -46,9 +46,12 @@ public class InsideController {
         Map model = new HashMap<String, String>();
         model.put(HEADING, "Pasientovervåkning - demente");
         model.put(PATIENT_1, namepatient1 + " Inside - (A: 50, B: 30, C:45)  - " + patient1);
-        model.put(PATIENT_2, namepatient2 + " Inside - (A: 50, B: 40, C:45)  - " + patient2);
-
-        if (randomGenerator.nextInt(100) > 50) {
+        if (randomGenerator.nextInt(100) > 40) {
+            model.put(PATIENT_2, namepatient2 + " Inside - (A: 50, B: 40, C:45)  - " + patient2);
+        } else {
+            model.put(PATIENT_2, namepatient2 + " Inside - (A: 55, B: 45, C:45)  - " + patient2);
+        }
+        if (randomGenerator.nextInt(100) > 30) {
             model.put(PATIENT_3, namepatient3 + " Inside - (A: 50, B: 36, C:65)  - " + patient3);
             model.put(PATIENT_4, namepatient4 + " <font color=\"red\">Outside - (A: 50, B: 30, C:13)  - " + patient4 + "</font>");
         } else {
