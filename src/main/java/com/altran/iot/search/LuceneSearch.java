@@ -22,7 +22,7 @@ public class LuceneSearch {
     private static final Logger logger = LoggerFactory.getLogger(LuceneSearch.class);
     private static final Analyzer ANALYZER = new StandardAnalyzer(Version.LUCENE_31);
     private static final int MAX_HITS = 200;
-    private static final int MAX_INFRASTRUCTURE_HITS = 2000;
+    private static final int MAX_INFRASTRUCTURE_HITS = 5000;
 
     private final Directory index;
 
@@ -62,8 +62,10 @@ public class LuceneSearch {
         IndexSearcher searcher = null;
         try {
             searcher = new IndexSearcher(index, true);
+            SortField sortField = new SortField(LuceneIndexer.FIELD_TIMESTAMP, SortField.STRING, true);  // Descending sort og timestamp
+            Sort sort = new Sort(sortField);
+            TopFieldDocs topDocs = searcher.search(q, MAX_INFRASTRUCTURE_HITS, sort);
             result.setNumOfMeasurements(searcher.getIndexReader().numDocs());
-            TopDocs topDocs = searcher.search(q, MAX_INFRASTRUCTURE_HITS);
 
             for (ScoreDoc hit : topDocs.scoreDocs) {
                 int docId = hit.doc;
