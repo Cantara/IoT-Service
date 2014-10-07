@@ -3,7 +3,7 @@
 
     <groupId>com.altran.iot</groupId>
     <artifactId>IoT-service</artifactId>
-    <version>0.8.22</version>
+    <version>0.8.24-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>IoT-service</name>
