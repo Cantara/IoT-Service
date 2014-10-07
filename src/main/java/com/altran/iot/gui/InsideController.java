@@ -151,14 +151,7 @@ public class InsideController {
         return valuePatient1;
     }
 
-    private boolean isInside(String position) {
-        if (randomGenerator.nextInt(100) > 40) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isLost(String position) {
+    public static boolean isInside(String position) {
         try {
             String delims = ",";
             StringTokenizer st = new StringTokenizer(position, delims);
@@ -173,6 +166,13 @@ public class InsideController {
             }
         } catch (Exception e) {
             log.error("Error trying to calculate if patient is lost");
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isLost(String position) {
+        if (position.indexOf("?") > 0) {
             return true;
         }
         return false;
