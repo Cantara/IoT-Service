@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -143,7 +145,6 @@ public class InsideController {
      * Find the last link budget for our sensors, if the last sensorreading is old, return value="?"
      * <p/>
      * TODO:  Fix mapping of readings to radiogateways
-     * TODO:  Fix verification of age of measurement
      *
      * @param patient
      * @return
@@ -156,10 +157,13 @@ public class InsideController {
 
             List<Observation> observations = luceneSearch.search(patient);
             Observation o1 = observations.get(0);
+            if (isOld(o1.getTimestampCreated())) {
+                log.info("No recent sensor reading found");
+                return "(A: ?, B: ?, C: ?) ";
+            }
             Observation o2 = observations.get(1);
             Observation o3 = observations.get(2);
 
-            // FIXME: Not correct, need to find latest reading for each radiogateway
             valuePatient = "(A:" + o1.getMeasurements().get("lb") + ", B:" + o2.getMeasurements().get("lb") + ", C:" + o3.getMeasurements().get("lb") + ")";
 
         } catch (Exception e) {
@@ -194,5 +198,17 @@ public class InsideController {
             return true;
         }
         return false;
+    }
+
+    public static boolean isOld(String dateString) {
+        try {
+            SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if (new Date().getTime() - dateParser.parse(dateString).getTime() <= 2 * 60 * 1000) {
+                return false;
+            }
+        } catch (ParseException pe) {
+            log.error("Illegal datestring received, returning isOld=true string:" + dateString);
+        }
+        return true;
     }
 }
