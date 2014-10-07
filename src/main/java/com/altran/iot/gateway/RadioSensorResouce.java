@@ -54,22 +54,22 @@ public class RadioSensorResouce {
     //http://localhost:80/iot/observe/radio
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response registerObservationForSensor(@Context UriInfo ui, String prefix) {
+    public Response registerObservationForSensor(@Context UriInfo ui, String d7data) {
 
 
         final long observedMethods;
 
         try {
-            if (prefix != null) {
-                log.trace("registerObservationForSensor body={}", prefix);
-                if (prefix.length() > 20) {
+            if (d7data != null) {
+                log.trace("registerObservationForSensor body={}", d7data);
+                if (d7data.length() > 20) {
                     //observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
 
-                    List<Observation> observations = Observation.fromD7Data(prefix);
+                    List<Observation> observations = Observation.fromD7Data(d7data);
                     index.addToIndex(observations);
 
                 } else {
-                    log.error("You must supply some body content. body=" + prefix + "\n");
+                    log.error("You must supply some body content. body=" + d7data + "\n");
 
                 }
                 // observedMethods = -1;
@@ -77,7 +77,7 @@ public class RadioSensorResouce {
                 log.error("You must supply some body content.");
             }
         } catch (Exception e) {
-            throw new UnsupportedOperationException("You must supply Dash7 gw body content.  body=" + prefix + "\n", e);
+            throw new UnsupportedOperationException("You must supply Dash7 gw body content.  body=" + d7data + "\n", e);
         }
 
         return Response.ok("ok").build();
@@ -111,8 +111,14 @@ public class RadioSensorResouce {
             String result = buildJsonResult(observations);
             log.info("Search query={} returned {} observations", query, observations.size());
             return Response.ok(result).build();
-        } else {
-            throw new UnsupportedOperationException("You must supply some body content.");
+        } else {  // Lets play nice and supply the latest observations instead
+            query = "ts";
+            log.trace("registerObservationForSensor body={}", query);
+            // observedMethods = writeOperations.addObservations(prefix, new ArrayList<ObservedMethod>());
+            List<Observation> observations = luceneSearch.search(query);
+            String result = buildJsonResult(observations);
+            log.info("Search query={} returned {} observations", query, observations.size());
+            return Response.ok(result).build();
         }
 
     }
