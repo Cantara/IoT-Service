@@ -23,7 +23,7 @@ public class Observation {
     private String timestampCreated;
     private String timestampReceived;
     private Map<String, String> measurements;
-    private static SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private String luceneJson;
 
@@ -257,8 +257,8 @@ public class Observation {
      */
     public static String getStringDate(Object timestampstring) {
         try {
-            Double d1 = Double.parseDouble(timestampstring.toString()) / 1000;
-            Date date = new Date((long) d1.intValue() * 1000L);
+            Double d1 = Double.parseDouble(timestampstring.toString());
+            Date date = new Date(d1.longValue());
             return dateParser.format(date);
         } catch (NumberFormatException ne) {
             // Already converted

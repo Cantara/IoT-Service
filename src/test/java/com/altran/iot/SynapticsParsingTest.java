@@ -191,10 +191,10 @@ public class SynapticsParsingTest {
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         System.out.println(dateParser.parse("2014-10-06 18:00").getTime());
         System.out.println(Double.parseDouble("1.4122646228718E12") / 1000);
-        Double d1 = Double.parseDouble("1.4122646228718E12") / 1000;
-        System.out.println(d1.intValue());
+        Double d1 = Double.parseDouble("1.4122646228718E12");
+        System.out.println(d1.longValue());
 
-        Date date = new Date((long) d1.intValue() * 1000L);
+        Date date = new Date(d1.longValue());
         System.out.println(dateParser.format(date));
     }
 }
