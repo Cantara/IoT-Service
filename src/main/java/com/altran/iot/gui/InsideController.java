@@ -1,16 +1,36 @@
 package com.altran.iot.gui;
 
+import com.altran.iot.QueryOperations;
+import com.altran.iot.WriteOperations;
+import com.altran.iot.observation.Observation;
+import com.altran.iot.observation.ObservationsService;
+import com.altran.iot.search.LuceneIndexer;
+import com.altran.iot.search.LuceneSearch;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 
 @Controller
 public class InsideController {
+
+    private static final Logger log = LoggerFactory.getLogger(InsideController.class);
+
+    private final QueryOperations queryOperations;
+    private final WriteOperations writeOperations;
+    private final ObjectMapper mapper;
+    private final LuceneIndexer index;
+    private LuceneSearch luceneSearch;
+
 
     public static final String HEADING = "message";
 
@@ -38,30 +58,78 @@ public class InsideController {
 
     Random randomGenerator = new Random();
 
+    /**
+     * @Autowired public ObservedMethodsResouce(QueryOperations queryOperations, WriteOperations writeOperations, ObjectMapper mapper) {
+     * this.queryOperations = queryOperations;
+     * this.writeOperations = writeOperations;
+     * this.mapper = mapper;
+     * }
+     */
+    @Autowired
+    public InsideController(ObservationsService observationsService, ObjectMapper mapper, LuceneIndexer index) {
+        this.queryOperations = observationsService;
+        this.writeOperations = observationsService;
+        this.mapper = mapper;
+        this.index = index;
+        this.luceneSearch = new LuceneSearch(index.getDirectory());
+    }
+
 
     @RequestMapping("/dement")
-    public ModelAndView test() {
+    public ModelAndView calculatePatients() {
+
+        String valuePatient1 = getTriangulationString(patient1);
+        String valuePatient2 = getTriangulationString(patient2);
+        String valuePatient3 = getTriangulationString(patient3);
+        String valuePatient4 = getTriangulationString(patient4);
+        String valuePatient5 = getTriangulationString(patient5);
 
 
         Map model = new HashMap<String, String>();
         model.put(HEADING, "Pasientovervåkning - demente");
-        model.put(PATIENT_1, namepatient1 + " Inside - (A: 50, B: 30, C:45)  - " + patient1);
-        if (randomGenerator.nextInt(100) > 40) {
-            model.put(PATIENT_2, namepatient2 + " Inside - (A: 50, B: 40, C:45)  - " + patient2);
+
+
+        if (isLost(valuePatient1)) {
+            model.put(PATIENT_1, namepatient1 + " <font color=\"orange\">Unknown - " + valuePatient1 + "  - " + patient1 + "</font>");
+        } else if (isInside(valuePatient1)) {
+            model.put(PATIENT_1, namepatient1 + " Inside - " + valuePatient1 + "  - " + patient1);
         } else {
-            model.put(PATIENT_2, namepatient2 + " Inside - (A: 55, B: 45, C:45)  - " + patient2);
+            model.put(PATIENT_1, namepatient1 + " <font color=\"red\">Outside - " + valuePatient1 + "  - " + patient1 + "</font>");
         }
-        if (randomGenerator.nextInt(100) > 30) {
-            model.put(PATIENT_3, namepatient3 + " Inside - (A: 50, B: 36, C:65)  - " + patient3);
-            model.put(PATIENT_4, namepatient4 + " <font color=\"red\">Outside - (A: 50, B: 30, C:13)  - " + patient4 + "</font>");
-        } else if (randomGenerator.nextInt(100) > 40) {
-            model.put(PATIENT_3, namepatient3 + " <font color=\"red\">Outside - (A: 50, B: 40, C:?)  - " + patient3 + "</font>");
-            model.put(PATIENT_4, namepatient4 + " Inside - (A: 50, B: 36, C:65)  - " + patient4);
+
+        if (isLost(valuePatient2)) {
+            model.put(PATIENT_2, namepatient2 + " <font color=\"orange\">Unknown - " + valuePatient2 + "  - " + patient2 + "</font>");
+        } else if (isInside(valuePatient2)) {
+            model.put(PATIENT_2, namepatient2 + " Inside - " + valuePatient2 + "  - " + patient2);
         } else {
-            model.put(PATIENT_3, namepatient3 + " <font color=\"red\">Outside - (A: 50, B: 40, C:?)  - " + patient3 + "</font>");
-            model.put(PATIENT_4, namepatient4 + " <font color=\"red\">Outside - (A: 50, B: 30, C:13)  - " + patient4 + "</font>");
+            model.put(PATIENT_2, namepatient2 + " <font color=\"red\">Outside - " + valuePatient2 + "  - " + patient2 + "</font>");
         }
-        model.put(PATIENT_5, namepatient5 + " <font color=\"yellow\">Offline - (A: ?, B: ?, C:?)  - " + patient5 + "</font> ");
+
+        if (isLost(valuePatient3)) {
+            model.put(PATIENT_3, namepatient3 + " <font color=\"orange\">Unknown - " + valuePatient3 + "  - " + patient3 + "</font>");
+        } else if (isInside(valuePatient3)) {
+            model.put(PATIENT_3, namepatient3 + " Inside - " + valuePatient3 + "  - " + patient3);
+        } else {
+            model.put(PATIENT_3, namepatient3 + " <font color=\"red\">Outside - " + valuePatient3 + "  - " + patient3 + "</font>");
+        }
+
+        if (isLost(valuePatient4)) {
+            model.put(PATIENT_4, namepatient4 + " <font color=\"orange\">Unknown - " + valuePatient4 + "  - " + patient4 + "</font>");
+        } else if (isInside(valuePatient4)) {
+            model.put(PATIENT_4, namepatient4 + " Inside - " + valuePatient4 + "  - " + patient4);
+        } else {
+            model.put(PATIENT_4, namepatient4 + " <font color=\"red\">Outside - " + valuePatient4 + "  - " + patient4 + "</font>");
+        }
+
+        if (isLost(valuePatient5)) {
+            model.put(PATIENT_5, namepatient5 + " <font color=\"orange\">Unknown - " + valuePatient5 + "  - " + patient5 + "</font>");
+        } else if (isInside(valuePatient5)) {
+            model.put(PATIENT_5, namepatient5 + " Inside - " + valuePatient5 + "  - " + patient5);
+        } else {
+            model.put(PATIENT_5, namepatient5 + " <font color=\"red\">Outside - " + valuePatient5 + "  - " + patient5 + "</font>");
+        }
+
+
 
         model.put(CORNER_1, "A: 50, B: 30, C:45");
         model.put(CORNER_2, "A: 50, B: 80, C:45");
@@ -71,5 +139,32 @@ public class InsideController {
 
         String message = "Pasientovervåkning - demente";
         return new ModelAndView("dement", "model", model);
+    }
+
+    private String getTriangulationString(String patient) {
+        String valuePatient1;
+        try {
+            List<Observation> observations = luceneSearch.search(patient);
+            Observation o = observations.get(0);
+            valuePatient1 = "(" + o.getMeasurements().get("lb") + ", B: 30, C:45)";
+
+        } catch (Exception e) {
+            valuePatient1 = "(A: ?, B: ?, C:?) ";
+        }
+        return valuePatient1;
+    }
+
+    private boolean isInside(String position) {
+        if (randomGenerator.nextInt(100) > 40) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isLost(String position) {
+        if (position.indexOf("?") > 0) {
+            return true;
+        }
+        return false;
     }
 }
