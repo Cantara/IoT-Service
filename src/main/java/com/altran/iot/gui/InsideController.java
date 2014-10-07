@@ -25,24 +25,32 @@ public class InsideController {
     public static final String CORNER_3 = "corner3";
     public static final String CORNER_4 = "corner4";
 
+    private String patient1 = "001BC50C71000019";
+    private String patient2 = "001BC50C7100001E";
+    private String patient3 = "001BC50C71000017";
+    private String patient4 = "001BC50C7100001F";
+    private String patient5 = "001BC50C7100001A";
+
     Random randomGenerator = new Random();
 
 
     @RequestMapping("/dement")
     public ModelAndView test() {
+
+
         Map model = new HashMap<String, String>();
         model.put(HEADING, "Pasientovervåkning - demente");
-        model.put(PATIENT_1, "Inside - A: 50, B: 30, C:45");
-        model.put(PATIENT_2, "Inside - A: 50, B: 40, C:45");
+        model.put(PATIENT_1, "Inside - (A: 50, B: 30, C:45)  - " + patient1);
+        model.put(PATIENT_2, "Inside - (A: 50, B: 40, C:45)  - " + patient2);
 
         if (randomGenerator.nextInt(100) > 50) {
-            model.put(PATIENT_3, "Inside - A: 50, B: 36, C:65");
-            model.put(PATIENT_4, "<font color=\"red\">Outside - A: 50, B: 30, C:13</font>");
+            model.put(PATIENT_3, "Inside - (A: 50, B: 36, C:65)  - " + patient3);
+            model.put(PATIENT_4, "<font color=\"red\">Outside - (A: 50, B: 30, C:13)  - " + patient4 + "</font>");
         } else {
-            model.put(PATIENT_3, "<font color=\"red\">Outside - A: 50, B: 30, C:13</font>");
-            model.put(PATIENT_4, "Inside - A: 50, B: 36, C:65");
+            model.put(PATIENT_3, "<font color=\"red\">Outside - (A: 50, B: 40, C:?)  - " + patient3 + "</font>");
+            model.put(PATIENT_4, "Inside - (A: 50, B: 36, C:65)  - " + patient4);
         }
-        model.put(PATIENT_5, "<font color=\"red\">Outside - A: 20, B: 30, C:45</font> ");
+        model.put(PATIENT_5, "<font color=\"red\">Outside - (A: ?, B: ?, C:?)  - " + patient5 + "</font> ");
 
         model.put(CORNER_1, "A: 50, B: 30, C:45");
         model.put(CORNER_2, "A: 50, B: 80, C:45");
