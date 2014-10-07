@@ -11,11 +11,11 @@ public class IsOutsideTest {
     @Test
     public void shouldBeOutsideTest() {
         String position = "A: 50, B: 30, C:45";
-        assert (InsideController.isInside(position) == true);
+        assert (InsideController.isInside(position) == false);
         position = "A: 50, B: 30, C:95";
-        assert (InsideController.isInside(position) == true);
+        assert (InsideController.isInside(position) == false);
         position = "A: 50, B: 70, C:45";
-        assert (InsideController.isInside(position) == true);
+        assert (InsideController.isInside(position) == false);
     }
 
     @Test

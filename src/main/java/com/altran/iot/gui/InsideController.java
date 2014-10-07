@@ -138,20 +138,38 @@ public class InsideController {
         return new ModelAndView("dement", "model", model);
     }
 
+
+    /**
+     * Find the last link budget for our sensors, if the last sensorreading is old, return value="?"
+     * <p/>
+     * TODO:  Fix mapping of readings to radiogateways
+     * TODO:  Fix verification of age of measurement
+     *
+     * @param patient
+     * @return
+     */
     private String getTriangulationString(String patient) {
-        String valuePatient1;
+        String valuePatient;
         try {
+
+            // FIXME: Should be a short tail query, and loop through to find the patient
+
             List<Observation> observations = luceneSearch.search(patient);
-            Observation o = observations.get(0);
-            valuePatient1 = "(A:" + o.getMeasurements().get("lb") + ", B: 30, C:45)";
+            Observation o1 = observations.get(0);
+            Observation o2 = observations.get(1);
+            Observation o3 = observations.get(2);
+
+            // FIXME: Not correct, need to find latest reading for each radiogateway
+            valuePatient = "(A:" + o1.getMeasurements().get("lb") + ", B:" + o2.getMeasurements().get("lb") + ", C:" + o3.getMeasurements().get("lb") + ")";
 
         } catch (Exception e) {
-            valuePatient1 = "(A: ?, B: ?, C:?) ";
+            valuePatient = "(A: ?, B: ?, C: ?) ";
         }
-        return valuePatient1;
+        return valuePatient;
     }
 
     public static boolean isInside(String position) {
+        boolean isIn =true;
         try {
             String delims = ",";
             StringTokenizer st = new StringTokenizer(position, delims);
@@ -159,8 +177,8 @@ public class InsideController {
                 String value = st.nextElement().toString();
                 value = value.replaceAll("[^\\d.]", "");
                 Integer i = Integer.parseInt(value);
-                if (i < 60) {
-                    return true;
+                if (i < 98) {
+                    isIn = false;
 
                 }
             }
@@ -168,7 +186,7 @@ public class InsideController {
             log.error("Error trying to calculate if patient is lost");
             return true;
         }
-        return false;
+        return isIn;
     }
 
     public static boolean isLost(String position) {
