@@ -142,7 +142,7 @@ public class InsideController {
 
 
     /**
-     * Find the last link budget for our sensors, if the last sensorreading is old, return value="?"
+     * Find the last link budget for our sensors, if the last sensor reading is old, return value="?"
      * <p/>
      *
      * @param patient
@@ -157,14 +157,16 @@ public class InsideController {
             List<Observation> observations = luceneSearch.search(patient);
             for (int i = 0; i < 10; i++) {  // we just check the latest 10 measurements
                 Observation s = observations.get(i);
-                if (triangulations.get(s.getRadioGatewayId()) == null) {
-                    if (isOld(s.getTimestampCreated())) {
+                if (triangulations.get(s.getRadioGatewayId()) == null) {  // Registration does not exist
+                    if (isOld(s.getTimestampCreated())) {  // is the registration old
                         triangulations.put(s.getRadioGatewayId(), "?");
+                    } else {
+                        triangulations.put(s.getRadioGatewayId(), s.getMeasurements().get("lb")); // add registration
                     }
-                    triangulations.put(s.getRadioGatewayId(), s.getMeasurements().get("lb"));
                 }
             }
-            Iterator entries = triangulations.entrySet().iterator();
+            Map<String, String> treeMap = new TreeMap<String, String>(triangulations);  // Sort on keys
+            Iterator entries = treeMap.entrySet().iterator();
             Map.Entry thisEntry = (Map.Entry) entries.next();
             valuePatient = "(A:" + thisEntry.getValue();
             thisEntry = (Map.Entry) entries.next();
