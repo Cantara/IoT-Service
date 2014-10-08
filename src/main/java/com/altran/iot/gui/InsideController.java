@@ -49,11 +49,11 @@ public class InsideController {
     private String patient3 = "001BC50C71000017";
     private String patient4 = "001BC50C7100001F";
     private String patient5 = "001BC50C7100001A";
-    private String namepatient1 = "Lise";
-    private String namepatient2 = "Petter";
-    private String namepatient3 = "Ole";
-    private String namepatient4 = "Knut";
-    private String namepatient5 = "Reidun";
+    private String namepatient1 = "Leon";
+    private String namepatient2 = "Stig";
+    private String namepatient3 = "Kirsten";
+    private String namepatient4 = "Jan Helge";
+    private String namepatient5 = "Jason";
 
     Random randomGenerator = new Random();
 
