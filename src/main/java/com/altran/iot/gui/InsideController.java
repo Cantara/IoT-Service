@@ -144,7 +144,6 @@ public class InsideController {
     /**
      * Find the last link budget for our sensors, if the last sensorreading is old, return value="?"
      * <p/>
-     * TODO:  Fix mapping of readings to radiogateways
      *
      * @param patient
      * @return
@@ -153,18 +152,26 @@ public class InsideController {
         String valuePatient;
         try {
 
-            // FIXME: Should be a short tail query, and loop through to find the patient
 
+            Map triangulations = new HashMap();
             List<Observation> observations = luceneSearch.search(patient);
-            Observation o1 = observations.get(0);
-            if (isOld(o1.getTimestampCreated())) {
-                log.info("No recent sensor reading found");
-                return "(A: ?, B: ?, C: ?) ";
+            for (int i = 0; i < 10; i++) {  // we just check the latest 10 measurements
+                Observation s = observations.get(i);
+                if (triangulations.get(s.getRadioGatewayId()) == null) {
+                    if (isOld(s.getTimestampCreated())) {
+                        triangulations.put(s.getRadioGatewayId(), "?");
+                    }
+                    triangulations.put(s.getRadioGatewayId(), s.getMeasurements().get("lb"));
+                }
             }
-            Observation o2 = observations.get(1);
-            Observation o3 = observations.get(2);
+            Iterator entries = triangulations.entrySet().iterator();
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            valuePatient = "(A:" + thisEntry.getValue();
+            thisEntry = (Map.Entry) entries.next();
+            valuePatient = valuePatient + ", B:" + thisEntry.getValue();
+            thisEntry = (Map.Entry) entries.next();
+            valuePatient = valuePatient + ", C:" + thisEntry.getValue() + ")";
 
-            valuePatient = "(A:" + o1.getMeasurements().get("lb") + ", B:" + o2.getMeasurements().get("lb") + ", C:" + o3.getMeasurements().get("lb") + ")";
 
         } catch (Exception e) {
             valuePatient = "(A: ?, B: ?, C: ?) ";
