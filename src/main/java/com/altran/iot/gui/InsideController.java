@@ -89,43 +89,43 @@ public class InsideController {
 
 
         if (isLost(valuePatient1)) {
-            model.put(PATIENT_1, namepatient1 + " <font color=\"orange\">Unknown - " + valuePatient1 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient1 + "\">" + patient1 + "</a></font>");
+            model.put(PATIENT_1, namepatient1 + " - <font color=\"orange\">Unknown - " + valuePatient1 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient1 + "\">" + patient1 + "</a></font>");
         } else if (isInside(valuePatient1)) {
-            model.put(PATIENT_1, namepatient1 + " Inside - " + valuePatient1 + "  - " + patient1);
+            model.put(PATIENT_1, namepatient1 + " - Inside - " + valuePatient1 + "  - " + patient1);
         } else {
-            model.put(PATIENT_1, namepatient1 + " <font color=\"red\">Unknown - " + valuePatient1 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient1 + "\">" + patient1 + "</a></font>");
+            model.put(PATIENT_1, namepatient1 + " - <font color=\"red\">Outside - " + valuePatient1 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient1 + "\">" + patient1 + "</a></font>");
         }
 
         if (isLost(valuePatient2)) {
-            model.put(PATIENT_2, namepatient2 + " <font color=\"orange\">Unknown - " + valuePatient2 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient2 + "\">" + patient2 + "</a></font>");
+            model.put(PATIENT_2, namepatient2 + " - <font color=\"orange\">Unknown - " + valuePatient2 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient2 + "\">" + patient2 + "</a></font>");
         } else if (isInside(valuePatient2)) {
-            model.put(PATIENT_2, namepatient2 + " Inside - " + valuePatient2 + "  - " + patient2);
+            model.put(PATIENT_2, namepatient2 + " - Inside - " + valuePatient2 + "  - " + patient2);
         } else {
-            model.put(PATIENT_2, namepatient2 + " <font color=\"red\">Unknown - " + valuePatient2 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient2 + "\">" + patient2 + "</a></font>");
+            model.put(PATIENT_2, namepatient2 + " - <font color=\"red\">Outside - " + valuePatient2 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient2 + "\">" + patient2 + "</a></font>");
         }
 
         if (isLost(valuePatient3)) {
-            model.put(PATIENT_3, namepatient3 + " <font color=\"orange\">Unknown - " + valuePatient3 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient3 + "\">" + patient3 + "</a></font>");
+            model.put(PATIENT_3, namepatient3 + " - <font color=\"orange\">Unknown - " + valuePatient3 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient3 + "\">" + patient3 + "</a></font>");
         } else if (isInside(valuePatient3)) {
-            model.put(PATIENT_3, namepatient3 + " Inside - " + valuePatient3 + "  - " + patient3);
+            model.put(PATIENT_3, namepatient3 + " - Inside - " + valuePatient3 + "  - " + patient3);
         } else {
-            model.put(PATIENT_3, namepatient3 + " <font color=\"red\">Unknown - " + valuePatient3 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient3 + "\">" + patient3 + "</a></font>");
+            model.put(PATIENT_3, namepatient3 + " - <font color=\"red\">Outside - " + valuePatient3 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient3 + "\">" + patient3 + "</a></font>");
         }
 
         if (isLost(valuePatient4)) {
-            model.put(PATIENT_4, namepatient4 + " <font color=\"orange\">Unknown - " + valuePatient4 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient4 + "\">" + patient4 + "</a></font>");
+            model.put(PATIENT_4, namepatient4 + " - <font color=\"orange\">Unknown - " + valuePatient4 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient4 + "\">" + patient4 + "</a></font>");
         } else if (isInside(valuePatient4)) {
-            model.put(PATIENT_4, namepatient4 + " Inside - " + valuePatient4 + "  - " + patient4);
+            model.put(PATIENT_4, namepatient4 + " - Inside - " + valuePatient4 + "  - " + patient4);
         } else {
-            model.put(PATIENT_4, namepatient4 + " <font color=\"red\">Unknown - " + valuePatient4 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient4 + "\">" + patient4 + "</a></font>");
+            model.put(PATIENT_4, namepatient4 + " - <font color=\"red\">Outside - " + valuePatient4 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient4 + "\">" + patient4 + "</a></font>");
         }
 
         if (isLost(valuePatient5)) {
-            model.put(PATIENT_5, namepatient5 + " <font color=\"orange\">Unknown - " + valuePatient5 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient5 + "\">" + patient5 + "</a></font>");
+            model.put(PATIENT_5, namepatient5 + " - <font color=\"orange\">Unknown - " + valuePatient5 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient5 + "\">" + patient5 + "</a></font>");
         } else if (isInside(valuePatient5)) {
-            model.put(PATIENT_5, namepatient5 + " Inside - " + valuePatient5 + "  - " + patient5);
+            model.put(PATIENT_5, namepatient5 + " - Inside - " + valuePatient5 + "  - " + patient5);
         } else {
-            model.put(PATIENT_5, namepatient5 + " <font color=\"red\">Unknown - " + valuePatient5 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient5 + "\">" + patient5 + "</a></font>");
+            model.put(PATIENT_5, namepatient5 + " - <font color=\"red\">Outside - " + valuePatient5 + "  - " + "<a href=\"http://iot.altrancloud.com/?query=" + patient5 + "\">" + patient5 + "</a></font>");
         }
 
 
