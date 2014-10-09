@@ -190,7 +190,7 @@ public class InsideController {
                 String value = st.nextElement().toString();
                 value = value.replaceAll("[^\\d.]", "");
                 Integer i = Integer.parseInt(value);
-                if (i < 55) {
+                if (i > 65) {
                     isIn = false;
 
                 }
