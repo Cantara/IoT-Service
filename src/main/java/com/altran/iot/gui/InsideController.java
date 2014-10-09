@@ -176,7 +176,7 @@ public class InsideController {
 
 
         } catch (Exception e) {
-            valuePatient = "(A: ?, B: ?, C: ?) ";
+            valuePatient = "(A: ?, B: ?, C: ?)";
         }
         return valuePatient;
     }

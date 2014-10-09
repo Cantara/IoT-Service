@@ -1,12 +1,63 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Hello world</title>
+    <title>Beboerovervåkning - ${message}</title>
+    <style>canvas { width: 100%; height: 100% }</style>
 </head>
 <body>
-    <h3>Observations</h3>
+<script src="js/three.min.js"></script>
+<script>
+    var scene = new THREE.Scene();
+    //var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    var camera = new THREE.PerspectiveCamera(90, 1, 0.001, 700);
 
-    <h4>${message}</h4>
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
+
+    //RadioGateways
+    var radius = 1;
+    var segments = 32;
+    var gateway1Area = new THREE.CircleGeometry(radius, segments);
+    var gw1Material = new THREE.MeshBasicMaterial({color: 0xffffff});
+    var gateway1 = new THREE.Mesh(gateway1Area, gw1Material);
+    scene.add(gateway1);
+    gateway1.position.x = +1;
+
+    var gateway2Area = new THREE.CircleGeometry(radius, segments);
+    var gw2Material = new THREE.MeshBasicMaterial({color: 0xffffff});
+    var gateway2 = new THREE.Mesh(gateway1Area, gw1Material);
+    scene.add(gateway2);
+    gateway2.position.y = +1;
+
+    var gateway3Area = new THREE.CircleGeometry(radius, segments);
+    var gw3Material = new THREE.MeshBasicMaterial({color: 0xffffff});
+    var gateway3 = new THREE.Mesh(gateway1Area, gw1Material);
+    scene.add(gateway3);
+    gateway3.position.x = -0.5;
+    gateway3.position.y = -0.5;
+
+    //Cube
+    var geometry = new THREE.BoxGeometry(1,1,1);
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+
+    //Camera
+    camera.position.z = 5;
+
+    var render = function () {
+        requestAnimationFrame(render);
+
+      //  cube.rotation.x += 0.1;
+      //  cube.rotation.y += 0.1;
+
+        renderer.render(scene, camera);
+    };
+
+    render();
+</script>
 </body>
 </html>
