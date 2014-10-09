@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class LuceneIndexer {
@@ -38,6 +39,7 @@ public class LuceneIndexer {
     public static final String FIELD_MEASUREMENTS = "measurements";
     private final LRUMap timestamps = new LRUMap(200, 200);
     private IndexWriter indexWriter;
+    Random randongen = new Random();
 
     public Directory getDirectory() {
         return index;
@@ -112,8 +114,10 @@ public class LuceneIndexer {
                 logger.info("registerObservationForSensor - dropped - Received duplicate data. {}", observation);
             }
         }
-        iWriter.optimize();
-        iWriter.commit();
+        if (randongen.nextInt(100) > 70) {  // Reduxe disk activity a bit - optimize and commit every 3 observations
+            iWriter.optimize();
+            iWriter.commit();
+        }
 
 
     }
