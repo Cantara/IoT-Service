@@ -114,10 +114,10 @@ public class LuceneIndexer {
                 logger.info("registerObservationForSensor - dropped - Received duplicate data. {}", observation);
             }
         }
-        if (randongen.nextInt(100) > 70) {  // Reduxe disk activity a bit - optimize and commit every 3 observations
+        if (randongen.nextInt(100) > 90) {  // Reduce disk activity a bit - optimize and commit every 3 observations
             iWriter.optimize();
-            iWriter.commit();
         }
+        iWriter.commit();
 
 
     }
