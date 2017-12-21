@@ -2,7 +2,7 @@ IoT-Service
 =============
 
 
-![Build Status](https://jenkins.capraconsulting.no/buildStatus/icon?job=iot-service) - [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)  
+![Build Status](https://jenkins.capraconsulting.no/buildStatus/icon?job=iot-service) - [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)(http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)  
 
 [![Known Vulnerabilities](https://snyk.io/test/github/Cantara/iot-service/badge.svg)](https://snyk.io/test/github/Cantara/iot-service)
 
