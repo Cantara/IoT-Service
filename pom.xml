@@ -72,8 +72,8 @@
     <properties>
         <service.name>iot-service</service.name>
         <slf4j.version>1.7.7</slf4j.version>
-        <spring.version>4.1.8.RELEASE</spring.version>
-        <jetty.version>9.1.4.v20140401</jetty.version>
+        <spring.version>5.1.1.RELEASE</spring.version>
+        <jetty.version>9.4.12.v20180830</jetty.version>
         <jersey.version>2.8</jersey.version>
         <metrics.version>3.0.1</metrics.version>
         <jtds.version>1.3.1</jtds.version>
@@ -545,7 +545,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.4</version>
+            <version>2.9.7</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
