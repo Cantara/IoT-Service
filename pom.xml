@@ -69,7 +69,7 @@
         <service.name>iot-service</service.name>
         <slf4j.version>1.7.7</slf4j.version>
         <spring.version>5.1.4.RELEASE</spring.version>
-        <jetty.version>9.4.14.v20181114</jetty.version>
+        <jetty.version>9.4.19.v20190610</jetty.version>
         <jersey.version>2.8</jersey.version>
         <metrics.version>3.0.1</metrics.version>
         <jtds.version>1.3.1</jtds.version>
